@@ -1,0 +1,50 @@
+@import "../../styles/color.scss";
+
+.ant-layout-sider {
+    min-height: 100vh;
+    background: $sidebarBg;
+    box-shadow: 0 1px 1px -2px rgba(0, 0, 0, 0.12), 0 3px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 4px 3px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-container {
+    z-index: 100;
+    &.collapsed{
+      .ant-layout-sider-children{
+        padding: 0 !important;
+      }
+    }
+    .ant-layout-sider-children{
+        display: flex;
+        flex-direction: column;
+        padding: .8rem 0;
+        transition: .2s all;
+    }
+    .ant-menu{
+        height: unset !important;
+        background: transparent !important;
+        border: unset !important
+      }
+      .ant-menu-item {
+        height: 38px;
+        padding: 0 1rem !important;
+        line-height: 38px !important;
+        text-overflow: unset;
+        &.product-item{
+          height: unset;
+          display: flex;
+          white-space: normal;
+          padding-top: 6px !important;
+          padding-bottom: 8px !important;
+          .ant-menu-title-content{
+            margin-top: 4px;
+            line-height: 1.4;
+          }
+          .anticon{
+            min-width: unset;
+            svg{
+              margin-top: 4px;
+            }
+          }
+        }
+    }
+}

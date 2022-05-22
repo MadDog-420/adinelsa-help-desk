@@ -1,0 +1,16 @@
+@import "./color.scss";
+
+::-webkit-scrollbar {
+    width: 5px !important;
+    height: 4px !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $primaryColor;
+    border-radius: 15px;
+}
+
+.ant-layout{
+    min-height: 100vh;
+    background: white;
+}
