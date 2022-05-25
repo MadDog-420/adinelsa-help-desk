@@ -1,0 +1,7 @@
+@import "../../styles/color.scss";
+
+.custom-state{
+    &.warning{
+        background-color: $customYellow;
+    }
+}

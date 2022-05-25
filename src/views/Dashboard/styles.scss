@@ -1,0 +1,10 @@
+@import "../../styles/color.scss";
+
+.billing{
+    .lost{
+        color: $customError;
+    }
+    .win{
+        color: $customSuccess;
+    }
+}

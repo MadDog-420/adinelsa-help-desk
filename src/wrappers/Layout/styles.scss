@@ -1,0 +1,16 @@
+@import '../../styles/color.scss';
+
+.ant-layout::before{
+    content: "";
+    position: absolute;
+    display: block;
+    height: 125px;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: #0eb2bb;
+    z-index: 1;
+}
+.ant-layout-content{
+    z-index: 2;
+}

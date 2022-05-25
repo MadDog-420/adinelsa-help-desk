@@ -1,0 +1,11 @@
+
+.supplies-container{
+    .ant-tabs>.ant-tabs-nav{
+        margin-bottom: 0;
+    }
+    .ant-tabs-content-holder{
+        padding: 1rem;
+        background-color: white;
+        box-shadow: 0 1px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 4px 0 rgba(0, 0, 0, 0.1), 0 1px 4px 3px rgba(0, 0, 0, 0.1);
+    }
+}

@@ -2,7 +2,7 @@ import routesDictionary from "./routesDict";
 import asyncComponent from './../HOC/AsyncComponent/index';
 
 const Dashboard = asyncComponent(() => import('../views/Dashboard'));
-const Supplies = asyncComponent(() => import('../views/Dashboard'));
+const Supplies = asyncComponent(() => import('../views/Supplies'));
 const Contact = asyncComponent(() => import('../views/Dashboard'));
 const Claims = asyncComponent(() => import('../views/Dashboard'));
 

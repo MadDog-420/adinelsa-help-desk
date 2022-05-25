@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import routes from '../../routes/routesList';
 import MakeRouteWithSubRoutes from '../../routes';
+import './styles.scss';
 
 function CustomLayout(props) {
     return (

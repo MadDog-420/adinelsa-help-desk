@@ -142,6 +142,14 @@ $breakpoints: $xs, $sm, $md, $lg, $xl, $xxl;
   justify-content: center;
 }
 
+.text-white{
+  color: white;
+}
+
+.text-uppercase{
+  text-transform: uppercase;
+}
+
 .w-100 {
 width: 100%;
 }
@@ -205,4 +213,12 @@ font-size: 40px;
 
 .bg-white{
   background-color: white;
+}
+
+.border-round{
+  border-radius: 8px;
+}
+
+.h-initial{
+  height: initial;
 }

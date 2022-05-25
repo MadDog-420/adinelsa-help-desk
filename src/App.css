@@ -5,7 +5,7 @@
 }
 
 .App {
-  text-align: start;
+  text-align: left;
 }
 
 .App-link {
@@ -13,5 +13,12 @@
 }
 
 main{
-  padding: 2rem 4rem;
+  padding: 1.5rem 3rem;
+  font-size: 16px;
+}
+
+@media (max-width: 576px){
+  main{
+    padding-right: 1rem;
+  }
 }

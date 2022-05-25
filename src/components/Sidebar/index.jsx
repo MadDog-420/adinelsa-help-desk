@@ -10,7 +10,7 @@ import { menuItems } from './constants';
 import  Logo from '../../media/adinelsa-logo.png';
 import './styles.scss';
 
-const availableMenus = ['/'];
+const availableMenus = ['/', '/suministros'];
 
 const Sidebar = () => {
     const [collapsed, setCollapsed] = useState(false);
