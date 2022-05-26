@@ -103,16 +103,16 @@ function Dashboard() {
       <Row>
         <div className="title w-100 mb-3 text-white text-uppercase">Inicio</div>
       </Row>
-      <Row gutter={[16, 16]} className="w-100">
+      <Row gutter={[16, 16]}>
         <Col span={24}>
           <div className="custom-shadow p-3 pb-8 bg-white border-round" style={{maxHeight: '400px'}}>
-            <div className="text-bold mb-2">Histórico de consumo</div>
+            <div className="text-bold mb-2 font-large">Histórico de consumo</div>
             <Bar options={options} data={data} />
           </div>
         </Col>
         <Col xs={24} sm={24} md={12} className="h-initial">
           <div className="custom-shadow p-3 h-100 bg-white border-round">
-            <div className="text-bold mb-2">Última facturación</div>
+            <div className="text-bold mb-2 font-large">Última facturación</div>
             <div className="billing font-xx-large mb-1">
               <ThunderboltOutlined />
               {' '}
@@ -132,7 +132,7 @@ function Dashboard() {
         </Col>
         <Col xs={24} sm={24} md={12} className="h-initial">
           <div className="custom-shadow p-3 h-100 bg-white border-round">
-            <div className="text-bold mb-2">Última operación</div>
+            <div className="text-bold mb-2 font-large">Última operación</div>
             <div className="font-x-large mb-1"><FileOutlined /> Lorem ipsum dolor sit amet</div>
             <div className="font-regular">Estado: <StateComponent type={'warning'}>En revisión</StateComponent></div>
           </div>

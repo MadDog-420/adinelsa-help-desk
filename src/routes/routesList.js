@@ -3,8 +3,8 @@ import asyncComponent from './../HOC/AsyncComponent/index';
 
 const Dashboard = asyncComponent(() => import('../views/Dashboard'));
 const Supplies = asyncComponent(() => import('../views/Supplies'));
-const Contact = asyncComponent(() => import('../views/Dashboard'));
-const Claims = asyncComponent(() => import('../views/Dashboard'));
+const Contact = asyncComponent(() => import('../views/Contact'));
+const Complains = asyncComponent(() => import('../views/Complains'));
 
 const routes = [
     {
@@ -27,7 +27,7 @@ const routes = [
     },
     {
         path: routesDictionary.claims.router,
-        component: Claims,
+        component: Complains,
         title: routesDictionary.claims.title,
         name: routesDictionary.claims.moduleName,
     }

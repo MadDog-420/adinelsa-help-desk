@@ -30,9 +30,9 @@ const columns1 = [
       render: (_, { estado }) => (
         <>
           {estado.map((tag) => {
-            let color = tag.length > 5 ? 'geekblue' : 'green';
+            let color = tag.length > 7 ? 'green' : 'geekblue';
   
-            if (tag === 'loser') {
+            if (tag === 'rechazado') {
               color = 'volcano';
             }
   
@@ -50,8 +50,7 @@ const columns1 = [
       key: 'resultado',
       render: (_, record) => (
         <Space size="middle">
-          <a>Invite {record.name}</a>
-          <a>Delete</a>
+          <a>Descargar</a>
         </Space>
       ),
     },
@@ -60,24 +59,24 @@ const columns1 = [
 const data1 = [
     {
         key: '1',
-        codigo: 'John Brown',
+        codigo: '123456',
         fecha: moment().format('DD/MM/yyyy'),
         tipo: 'New York No. 1 Lake Park',
-        estado: ['nice', 'developer'],
+        estado: ['aprovado'],
     },
     {
         key: '2',
-        codigo: 'John Brown',
+        codigo: '123456',
         fecha: moment().format('DD/MM/yyyy'),
         tipo: 'New York No. 1 Lake Park',
-        estado: ['nice', 'developer'],
+        estado: ['enviado'],
     },
     {
         key: '3',
-        codigo: 'John Brown',
+        codigo: '123456',
         fecha: moment().format('DD/MM/yyyy'),
         tipo: 'New York No. 1 Lake Park',
-        estado: ['nice', 'developer'],
+        estado: ['rechazado'],
     },
 ];
 
@@ -152,7 +151,7 @@ function Supplies(){
             <Row>
                 <div className="title w-100 mb-3 text-white text-uppercase">Suministros</div>
             </Row>
-            <Row gutter={[16, 16]} className="w-100">
+            <Row gutter={[16, 16]}>
                 <Tabs defaultActiveKey="1" type="card" className="w-100">
                     <Tabs.TabPane tab="Mis últimos reclamos" key="1">
                         <Table columns={columns1} dataSource={data1} pagination={false} />

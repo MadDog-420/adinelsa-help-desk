@@ -10,8 +10,6 @@ import { menuItems } from './constants';
 import  Logo from '../../media/adinelsa-logo.png';
 import './styles.scss';
 
-const availableMenus = ['/', '/suministros'];
-
 const Sidebar = () => {
     const [collapsed, setCollapsed] = useState(false);
     const onCollapse = () => {
@@ -22,9 +20,7 @@ const Sidebar = () => {
     const [pathName, setPathName] = useState('');
 
     const handleSelect = ({ key }) => {
-        if (availableMenus.includes(key)) {
-            navigate(key, { replace: true });
-        }
+        navigate(key, { replace: true });
     };
 
     useEffect(() => {

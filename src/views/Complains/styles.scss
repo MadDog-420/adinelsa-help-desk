@@ -1,0 +1,10 @@
+.complains-container{
+    .ant-form-item-label{
+        text-align: start;
+    }
+    .ant-input:not(textarea){
+        border-top: 0;
+        border-right: 0;
+        border-left: 0;
+    }
+}
