@@ -1,4 +1,14 @@
 const routesDictionary = {
+    login: {
+        router: '/login',
+        title: 'Login',
+        moduleName: 'login'
+    },
+    register: {
+        router: '/register',
+        title: 'Registro',
+        moduleName: 'register'
+    },
     dashboard: {
         router: '/',
         title: 'Inicio',

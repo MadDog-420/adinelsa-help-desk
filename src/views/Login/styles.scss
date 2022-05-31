@@ -1,0 +1,14 @@
+@import "../../styles/variables.scss";
+
+.login-container{
+    padding: 4rem;
+    .login-form{
+        padding: 2.5rem;
+    }
+}
+
+@media (max-width: $xs){
+    .login-container{
+        padding: 0;
+    }
+}

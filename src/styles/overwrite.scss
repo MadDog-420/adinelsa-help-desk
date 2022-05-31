@@ -14,3 +14,8 @@
     min-height: 100vh;
     background: white;
 }
+
+.ant-btn-primary{
+    background-color: $primaryColor !important;
+    border-color: transparent !important;
+}

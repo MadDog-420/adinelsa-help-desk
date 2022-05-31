@@ -1,6 +1,6 @@
 import { Row, Col, Form, Input, Button, Select, DatePicker } from 'antd';
 import moment from 'moment';
-import './styles.scss'
+import './styles.scss';
 
 const formItemLayout = {
     labelCol: {
