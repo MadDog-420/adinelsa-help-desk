@@ -10,7 +10,7 @@ const HeaderComponent = ({
     const [collapsedResponsive, setCollapsedResponsive] = useState(true);
 
     return (
-      <div className="vh-100">
+      <div className="overflow-hidden vh-100">
         <Layout>
           <Sidebar
             collapsedResponsive={collapsedResponsive}

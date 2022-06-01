@@ -7,6 +7,7 @@ const Dashboard = asyncComponent(() => import('../views/Dashboard'));
 const Supplies = asyncComponent(() => import('../views/Supplies'));
 const Contact = asyncComponent(() => import('../views/Contact'));
 const Complains = asyncComponent(() => import('../views/Complains'));
+const SpecialForm = asyncComponent(() => import('../views/SpecialForm'));
 
 const routes = [
     {
@@ -46,6 +47,12 @@ const routes = [
         component: Complains,
         title: routesDictionary.claims.title,
         name: routesDictionary.claims.moduleName,
+    },
+    {
+        path: routesDictionary.specialForm.router,
+        component: SpecialForm,
+        title: routesDictionary.specialForm.title,
+        name: routesDictionary.specialForm.moduleName,
     }
 ];
 

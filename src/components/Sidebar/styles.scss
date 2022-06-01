@@ -60,3 +60,12 @@
     font-size: 18px;
   }
 }
+
+.sider-footer{
+  margin-top: 1.5rem;
+  margin-left: 1.5rem;
+  border-top: 1px solid $customGray;
+  .ant-select{
+    width: 100%;
+  }
+}

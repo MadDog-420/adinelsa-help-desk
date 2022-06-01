@@ -146,23 +146,23 @@ const data2 = [
 ];
 
 function Supplies(){
-    return (
-        <div className="supplies-container">
-            <Row>
-                <div className="title w-100 mb-3 text-white text-uppercase">Suministros</div>
-            </Row>
-            <Row gutter={[16, 16]}>
-                <Tabs defaultActiveKey="1" type="card" className="w-100">
-                    <Tabs.TabPane tab="Mis últimos reclamos" key="1">
-                        <Table columns={columns1} dataSource={data1} pagination={false} />
-                    </Tabs.TabPane>
-                    <Tabs.TabPane tab="Mis últimas facturas" key="2">
-                        <Table columns={columns2} dataSource={data2} pagination={false} />
-                    </Tabs.TabPane>
-                </Tabs>
-            </Row>
-        </div>
-    )
+  return (
+    <div className="supplies-container">
+      <Row>
+        <div className="title w-100 mb-3 text-white text-uppercase">Suministros</div>
+      </Row>
+      <Row gutter={[16, 16]}>
+        <Tabs defaultActiveKey="1" type="card" className="w-100">
+          <Tabs.TabPane tab="Mis últimos reclamos" key="1">
+            <Table columns={columns1} dataSource={data1} pagination={false} />
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="Mis últimas facturas" key="2">
+            <Table columns={columns2} dataSource={data2} pagination={false} />
+          </Tabs.TabPane>
+        </Tabs>
+      </Row>
+    </div>
+  )
 }
 
 export default Supplies;

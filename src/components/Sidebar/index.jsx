@@ -2,6 +2,7 @@ import {
     Menu,
     Layout,
     Image,
+    Select,
 } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
@@ -9,6 +10,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { menuItems } from './constants';
 import  Logo from '../../media/adinelsa-logo.png';
 import './styles.scss';
+import routesDictionary from '../../routes/routesDict';
 
 const Sidebar = () => {
     const [collapsed, setCollapsed] = useState(false);
@@ -21,6 +23,10 @@ const Sidebar = () => {
 
     const handleSelect = ({ key }) => {
         navigate(key, { replace: true });
+    };
+
+    const goToSpecialForm = (value) => {
+        navigate(routesDictionary.specialForm.router, { state: { form: value }});
     };
 
     useEffect(() => {
@@ -50,6 +56,12 @@ const Sidebar = () => {
                 onSelect={handleSelect}
                 items={menuItems}
             />
+            <div className="sider-footer py-3 mr-3">
+                <Select placeholder="Selecciona un formulario" size="large" onChange={(value) => goToSpecialForm(value)}>
+                    <Select.Option value='1'>Lectura de Medidor</Select.Option>
+                    <Select.Option value='2'>Lista de Órdenes</Select.Option>
+                </Select>
+            </div>
         </Layout.Sider>
     )
 }

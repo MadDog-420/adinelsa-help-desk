@@ -28,6 +28,11 @@ const routesDictionary = {
         router: '/reclamos',
         title: 'Reclamos',
         moduleName: 'reclamos'
+    },
+    specialForm: {
+        router: '/especial',
+        title: 'Formularios especiales',
+        moduleName: 'especial'
     }
 }
 
