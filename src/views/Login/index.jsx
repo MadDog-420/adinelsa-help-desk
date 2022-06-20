@@ -1,4 +1,5 @@
-import { Row, Col, Form, Image, Input, Button } from 'antd';
+import { useState } from 'react';
+import { Row, Col, Form, Image, Input, Button, message } from 'antd';
 import LoginImage from '../../media/images/login.jpg';
 import  Logo from '../../media/adinelsa-logo.png';
 import './styles.scss';
@@ -7,11 +8,29 @@ import routesDictionary from './../../routes/routesDict';
 
 function Login() {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
     const goToRegister = () => {
-        navigate(routesDictionary.register.router);
+      navigate(routesDictionary.register.router);
     }
     const onFinish = (values) => {
-        console.log('Received values of form: ', values);
+      setLoading(true);
+      const config = {
+        method: 'POST',
+        body: JSON.stringify(values),
+        headers:{
+          'Content-Type': 'application/json'
+        }
+      }
+      fetch('http://localhost:8000/api/user', config)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.length > 0) {
+            navigate(routesDictionary.dashboard.router);
+          } else {
+            message.error('Correo o contraseña incorrectos');
+          }
+          setLoading(false); 
+        });
     };
     return (
         <div className="login-container">
@@ -29,7 +48,7 @@ function Login() {
                             onFinish={onFinish}
                         >
                             <Form.Item
-                                name="correo"
+                                name="email"
                                 label="Correo electrónico"
                                 rules={[
                                 {
@@ -41,7 +60,7 @@ function Login() {
                                 <Input placeholder="Correo" />
                             </Form.Item>
                             <Form.Item
-                                name="clave"
+                                name="password"
                                 label="Contraseña"
                                 rules={[
                                 {
@@ -54,7 +73,7 @@ function Login() {
                             </Form.Item>
                             <Form.Item>
                                 <Row className="mt-4 mb-2" justify="center">
-                                    <Button type="primary" htmlType="submit" size="large">
+                                    <Button type="primary" htmlType="submit" size="large" loading={loading}>
                                         Ingresar
                                     </Button>
                                 </Row>
