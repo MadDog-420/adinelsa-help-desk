@@ -1,6 +1,9 @@
 @import "../../styles/variables.scss";
 
 .login-container{
+    height: 100%;
+    min-height: 100vh;
+    display: flex;
     padding: 4rem;
     .login-form{
         padding: 2.5rem;

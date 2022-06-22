@@ -6,7 +6,7 @@ import './styles.scss';
 function CustomLayout(props) {
     return (
         [
-            <div key="layout-view" className="h-100">
+            <div key="layout-view" className="vh-100">
                 <Router>
                     <Routes>
                         {

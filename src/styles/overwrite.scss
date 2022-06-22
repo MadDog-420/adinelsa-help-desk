@@ -19,3 +19,12 @@
     background-color: $primaryColor !important;
     border-color: transparent !important;
 }
+
+.ant-form-item{
+  .ant-form-item-label{
+    padding: 0 !important;
+    label{
+      font-weight: bold;
+    }
+  }
+}

@@ -132,6 +132,19 @@ $breakpoints: $xs, $sm, $md, $lg, $xl, $xxl;
 }
 @include padding-classes;
 
+.mx-auto{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.m-auto{
+  margin: auto;
+}
+
+.d-flex{
+  display: flex !important;
+}
+
 .text-left {
   text-align: left !important;
 }
