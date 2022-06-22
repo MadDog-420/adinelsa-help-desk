@@ -1,149 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Row, Tabs, Table, Space, Tag } from 'antd';
-import 'moment/locale/es';
-import moment from 'moment';
+import { Row, Tabs } from 'antd';
 import './styles.scss';
-
-moment.locale('es');
-
-const columns1 = [
-    {
-      title: 'Código de reclamo',
-      dataIndex: 'codigo',
-      key: 'codigo',
-      render: (text) => <a>{text}</a>,
-    },
-    {
-      title: 'Fecha de registro',
-      dataIndex: 'fecha',
-      key: 'fecha',
-    },
-    {
-      title: 'Tipo de reclamo',
-      dataIndex: 'tipo',
-      key: 'tipo',
-    },
-    {
-      title: 'Estado de reclamo',
-      key: 'estado',
-      dataIndex: 'estado',
-      render: (_, { estado }) => (
-        <>
-          {estado.map((tag) => {
-            let color = tag.length > 7 ? 'green' : 'geekblue';
-  
-            if (tag === 'rechazado') {
-              color = 'volcano';
-            }
-  
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
-    },
-    {
-      title: 'Resultado',
-      key: 'resultado',
-      render: (_, record) => (
-        <Space size="middle">
-          <a>Descargar</a>
-        </Space>
-      ),
-    },
-];
-
-const data1 = [
-    {
-        key: '1',
-        codigo: '123456',
-        fecha: moment().format('DD/MM/yyyy'),
-        tipo: 'New York No. 1 Lake Park',
-        estado: ['aprovado'],
-    },
-    {
-        key: '2',
-        codigo: '123456',
-        fecha: moment().format('DD/MM/yyyy'),
-        tipo: 'New York No. 1 Lake Park',
-        estado: ['enviado'],
-    },
-    {
-        key: '3',
-        codigo: '123456',
-        fecha: moment().format('DD/MM/yyyy'),
-        tipo: 'New York No. 1 Lake Park',
-        estado: ['rechazado'],
-    },
-];
-
-const columns2 = [
-    {
-        title: 'Mes',
-        dataIndex: 'mes',
-        key: 'mes',
-        render: (text) => <a>{text}</a>,
-    },
-    {
-        title: 'N° de recibo',
-        dataIndex: 'recibo',
-        key: 'recibo',
-    },
-    {
-        title: 'Consumo (KW/h)',
-        dataIndex: 'consumo',
-        key: 'consumo',
-    },
-    {
-        title: 'Importe (S/.)',
-        key: 'importe',
-        dataIndex: 'importe',
-        render: (value) => <a>{Number(value).toFixed(2)}</a>
-    },
-    {
-        title: 'Fecha Emisión',
-        key: 'fechEmision',
-        dataIndex: 'fechEmision',
-    },
-    {
-        title: 'Fecha Vencimiento',
-        key: 'fechVencimiento',
-        dataIndex: 'fechVencimiento',
-    },
-];
-
-const data2 = [
-    {
-        key: '1',
-        mes: moment().format('MMMM'),
-        recibo: '123456789',
-        consumo: 200,
-        importe: 160.00,
-        fechEmision: moment().format('DD/MM/yyyy'),
-        fechVencimiento: moment().format('DD/MM/yyyy'),
-    },
-    {
-        key: '2',
-        mes: moment().format('MMMM'),
-        recibo: '123456789',
-        consumo: 200,
-        importe: 160.00,
-        fechEmision: moment().format('DD/MM/yyyy'),
-        fechVencimiento: moment().format('DD/MM/yyyy'),
-    },
-    {
-        key: '3',
-        mes: moment().format('MMMM'),
-        recibo: '123456789',
-        consumo: 200,
-        importe: 160.00,
-        fechEmision: moment().format('DD/MM/yyyy'),
-        fechVencimiento: moment().format('DD/MM/yyyy'),
-    },
-];
+import MySupplies from './MySupplies/index';
 
 function Supplies(){
   return (
@@ -153,11 +11,11 @@ function Supplies(){
       </Row>
       <Row gutter={[16, 16]}>
         <Tabs defaultActiveKey="1" type="card" className="w-100">
-          <Tabs.TabPane tab="Mis últimos reclamos" key="1">
-            <Table columns={columns1} dataSource={data1} pagination={false} />
+          <Tabs.TabPane tab="Nuevo suministro" key="1">
+            <div>Supplies form</div>
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Mis últimas facturas" key="2">
-            <Table columns={columns2} dataSource={data2} pagination={false} />
+          <Tabs.TabPane tab="Mis suministros" key="2">
+            <MySupplies />
           </Tabs.TabPane>
         </Tabs>
       </Row>
