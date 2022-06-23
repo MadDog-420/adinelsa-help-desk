@@ -9,7 +9,7 @@ export const getItem = (label, key, icon, children, type, className) => ({
     className,
   });
 
-export const menuItems = defaultMenus.map((menu) => (
+export const menuItems = (rol) => defaultMenus(rol).map((menu) => (
   getItem(menu.title, menu.redirection, menu.icon)
 ));
 

@@ -2,31 +2,31 @@ import PropTypes from 'prop-types';
 import HeaderComponent from './../components/Header/index';
 
 const routeTypes = {
-    public: (props) => {
-      const {
-        renderProps, component: Component,
-        setLoginState,
-      } = props;
-  
-      return <Component setLoginState={setLoginState} {...renderProps} />;
-    },
-    private: (props) => {
-      const {
-        renderProps, component: Component,
-        isLogin = true, setLoginState,
-      } = props;
-  
-      if (!isLogin) {
-        return (null);
-      }
-  
-      return (
-        <HeaderComponent>
-          <Component setLoginState={setLoginState} {...renderProps} />
-        </HeaderComponent>
-      );
-    },
-  };
+  public: (props) => {
+    const {
+      renderProps, component: Component,
+      setLoginState,
+    } = props;
+
+    return <Component setLoginState={setLoginState} {...renderProps} />;
+  },
+  private: (props) => {
+    const {
+      renderProps, component: Component,
+      isLogin = true, setLoginState,
+    } = props;
+
+    if (!isLogin) {
+      return (null);
+    }
+
+    return (
+      <HeaderComponent>
+        <Component setLoginState={setLoginState} {...renderProps} />
+      </HeaderComponent>
+    );
+  },
+};
 
 const MakeRouteWithSubRoutes = (props) => {
     const {

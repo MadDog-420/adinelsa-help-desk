@@ -141,6 +141,11 @@ $breakpoints: $xs, $sm, $md, $lg, $xl, $xxl;
   margin: auto;
 }
 
+.my-auto{
+  margin-bottom: auto;
+  margin-top: auto;
+}
+
 .d-flex{
   display: flex !important;
 }

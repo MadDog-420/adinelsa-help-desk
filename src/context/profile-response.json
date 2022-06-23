@@ -1,0 +1,10 @@
+{
+  "status": "200",
+  "data": {
+    "name": "John",
+    "apellidoPaterno": "Smith",
+    "apellidoMaterno": "Doe",
+    "email": "admin@adinelsa.com",
+    "rol": "administrador"
+  }
+}

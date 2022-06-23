@@ -29,36 +29,36 @@ const Sidebar = () => {
 
   return(
     <Layout.Sider
-        breakpoint="lg"
-        width={260}
-        className={`sidebar-container ${collapsed && 'collapsed'}`}
-        collapsedWidth="0"
-        onCollapse={onCollapse}
+      breakpoint="lg"
+      width={260}
+      className={`sidebar-container ${collapsed && 'collapsed'}`}
+      collapsedWidth="0"
+      onCollapse={onCollapse}
     >
-        <div className="sider-header py-2 mr-2">
-            <div className="logo pl-2">
-                <Image src={Logo} width={120} preview={false} />
-            </div>
-            <div className="profile pr-2">
-                <UserOutlined />
-            </div>
+      <div className="sider-header py-2 mr-2">
+        <div className="logo pl-2">
+          <Image src={Logo} width={120} preview={false} />
         </div>
+        <div className="profile pr-2">
+          <UserOutlined />
+        </div>
+      </div>
+      <Menu
+        className="mt-2"
+        mode="vertical"
+        selectedKeys={[pathName]}
+        onSelect={handleSelect}
+        items={menuItems('administrador')}
+      />
+      <div className="sider-footer">
         <Menu
           className="mt-2"
           mode="vertical"
           selectedKeys={[pathName]}
           onSelect={handleSelect}
-          items={menuItems}
+          items={footerItems}
         />
-        <div className="sider-footer">
-          <Menu
-            className="mt-2"
-            mode="vertical"
-            selectedKeys={[pathName]}
-            onSelect={handleSelect}
-            items={footerItems}
-          />
-        </div>
+      </div>
     </Layout.Sider>
   )
 }

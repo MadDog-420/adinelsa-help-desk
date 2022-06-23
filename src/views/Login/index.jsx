@@ -54,8 +54,8 @@ function Login() {
 			method: 'POST',
 			body: JSON.stringify(values),
 			headers:{
-				'Content-Type': 'application/json'
-			}
+				'Content-Type': 'application/json',
+			},
 		}
 		fetch('http://localhost:8000/api/user', config)
 			.then((res) => res.json())
