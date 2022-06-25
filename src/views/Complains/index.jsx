@@ -1,4 +1,4 @@
-import { Row, Col, Form, Button, Tabs, Spin } from 'antd';
+import { Row, Col, Form, Button, Tabs, Spin, message } from 'antd';
 import moment from 'moment';
 import './styles.scss';
 import MyComplains from './MyComplains/index';
@@ -71,7 +71,8 @@ function Complains() {
         });
 				setTypes(typeList);
 				setLoading(false);
-			});
+			})
+      .catch(() => message.error('Error de conexión'));
     }
   }, [loading]);
 

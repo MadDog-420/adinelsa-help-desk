@@ -64,7 +64,9 @@ const AppContextProvider = (props) => {
   }, [data, error, authToken, setLoginState]);
 
   if (loading || !data) {
-    return (<div className="vh-100 d-flex"><Spin className="m-auto" size="large" /></div>);
+    return (
+    <div className="vh-100 d-flex"><Spin className="m-auto" size="large" /></div>
+    );
   }
 
   return (
