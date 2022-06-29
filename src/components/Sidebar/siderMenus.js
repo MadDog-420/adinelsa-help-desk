@@ -59,13 +59,6 @@ export const defaultMenus = (rol) => {
   if (rol === 'usuario') {
     return [
       {
-        title: routesDictionary.supplies.title,
-        key: routesDictionary.supplies.router,
-        redirection: routesDictionary.supplies.router,
-        name: routesDictionary.supplies.moduleName,
-        icon: <ThunderboltOutlined />,
-      },
-      {
         title: routesDictionary.claims.title,
         key: routesDictionary.claims.router,
         redirection: routesDictionary.claims.router,

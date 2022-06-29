@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import routes from '../../routes/routesList';
 import MakeRouteWithSubRoutes from '../../routes';
 import AppContextProvider from '../../context';
+import NoAccessView from './../../views/NoAccess';
 import './styles.scss';
 
 function CustomLayout(props) {
@@ -30,6 +31,7 @@ function CustomLayout(props) {
                   </Route>
                 ))
               }
+              <Route path="*" element={<NoAccessView />} />
             </Routes>
           </Router>
         </AppContextProvider>
