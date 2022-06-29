@@ -13,7 +13,7 @@ const routeTypes = {
   private: (props) => {
     const {
       renderProps, component: Component,
-      isLogin = true, setLoginState,
+      isLogin = true, setLoginState, rol,
     } = props;
 
     if (!isLogin) {
@@ -21,7 +21,7 @@ const routeTypes = {
     }
 
     return (
-      <HeaderComponent>
+      <HeaderComponent rol={rol}>
         <Component setLoginState={setLoginState} {...renderProps} />
       </HeaderComponent>
     );
@@ -29,24 +29,25 @@ const routeTypes = {
 };
 
 const MakeRouteWithSubRoutes = (props) => {
-    const {
-      path, title,
-      component: Component, type, login, setLoginState, userInformation, groups, setGroups,
-    } = props;
-    document.title = title;
-    return (
-        routeTypes[type]({
-            component: Component,
-            path,
-            type,
-            title,
-            login,
-            setLoginState,
-            userInformation,
-            groups,
-            setGroups,
-          })
-    );
+  const {
+    path, title, rol,
+    component: Component, type, login, setLoginState, userInformation, groups, setGroups,
+  } = props;
+  document.title = title;
+  return (
+    routeTypes[type]({
+      component: Component,
+      path,
+      type,
+      title,
+      login,
+      setLoginState,
+      userInformation,
+      groups,
+      setGroups,
+      rol,
+    })
+  );
 };
 
 MakeRouteWithSubRoutes.propTypes = {
@@ -58,6 +59,7 @@ MakeRouteWithSubRoutes.propTypes = {
   setLoginState: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   name: PropTypes.string,
+  rol: PropTypes.string.isRequired,
 };
 
 MakeRouteWithSubRoutes.defaultProps = {

@@ -9,9 +9,7 @@ import userData from './profile-response.json';
 const initialState = {
   me: {
     userInformation: {
-      residentialAddress: undefined,
-      preferredCurrency: undefined,
-      k1ElectronicDeliveryConsent: undefined,
+      rol: undefined,
     },
   },
 };
@@ -21,7 +19,7 @@ export const AppContext = createContext({
 });
 
 const AppContextProvider = (props) => {
-  const { children, setLoginState } = props;
+  const { children, setLoginState, setRol } = props;
   const authToken = localStorage.getItem(getAuthTokenName());
 
   const [loading, setLoading] = useState(true);
@@ -31,10 +29,11 @@ const AppContextProvider = (props) => {
   useEffect(() => {
     if (loading) {
       setData(userData.data);
+      setRol(userData.data.rol);
       setLoading(false);
       setError(false);
     }
-  }, [loading]);
+  }, [loading, setRol]);
 
   const reducer = (state, action) => {
     switch (action.type) {
@@ -80,6 +79,7 @@ const AppContextProvider = (props) => {
 AppContextProvider.propTypes = {
   children: PropTypes.node.isRequired,
   setLoginState: PropTypes.func.isRequired,
+  setRol: PropTypes.func.isRequired,
 };
 
 export default AppContextProvider;

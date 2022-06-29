@@ -10,9 +10,9 @@ const routesDictionary = {
         moduleName: 'register'
     },
     dashboard: {
-        router: '/',
-        title: 'Inicio',
-        moduleName: 'inicio'
+        router: '/dashboard',
+        title: 'Tablero',
+        moduleName: 'tablero'
     },
     supplies: {
         router: '/suministros',

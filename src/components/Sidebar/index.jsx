@@ -2,6 +2,7 @@ import {
   Menu,
   Layout,
   Image,
+  Skeleton,
 } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
@@ -9,8 +10,24 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { menuItems, footerItems } from './constants';
 import  Logo from '../../media/adinelsa-logo.png';
 import './styles.scss';
+import { PropTypes } from 'prop-types';
+import { homePage } from './../../routes/routesList';
+import { defaultMenus } from './siderMenus';
 
-const Sidebar = () => {
+const selectedKeys = (pathName, rol) => {
+  const selectKeysList = [pathName];
+  if (pathName === homePage(rol).path) {
+    defaultMenus(rol).forEach((item) => {
+      if (item.name.includes(homePage(rol).name)) {
+        selectKeysList.push(item.key);
+      }
+    });
+  }
+  return selectKeysList;
+}
+
+const Sidebar = (props) => {
+  const { rol } = props;
   const [collapsed, setCollapsed] = useState(false);
   const onCollapse = () => {
     setCollapsed(!collapsed);
@@ -43,13 +60,18 @@ const Sidebar = () => {
           <UserOutlined />
         </div>
       </div>
-      <Menu
-        className="mt-2"
-        mode="vertical"
-        selectedKeys={[pathName]}
-        onSelect={handleSelect}
-        items={menuItems('administrador')}
-      />
+      {
+        rol ? (
+          <Menu
+            className="mt-2"
+            mode="vertical"
+            selectedKeys={selectedKeys(pathName, rol)}
+            onSelect={handleSelect}
+            items={menuItems(rol)}
+          />
+        ) : (<Skeleton active />)
+      }
+      
       <div className="sider-footer">
         <Menu
           className="mt-2"
@@ -62,5 +84,13 @@ const Sidebar = () => {
     </Layout.Sider>
   )
 }
+
+Sidebar.propTypes = {
+  rol: PropTypes.string,
+};
+
+Sidebar.defaultProps = {
+  rol: undefined,
+};
 
 export default Sidebar;

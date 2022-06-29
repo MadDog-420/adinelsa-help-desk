@@ -5,6 +5,7 @@ const columns = [
       title: 'Código de suministro',
       dataIndex: 'codigo',
       key: 'codigo',
+      // eslint-disable-next-line jsx-a11y/anchor-is-valid
       render: (text) => <a>{text}</a>,
     },
     {

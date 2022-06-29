@@ -7,9 +7,37 @@ const Dashboard = asyncComponent(() => import('../views/Dashboard'));
 const Supplies = asyncComponent(() => import('../views/Supplies'));
 const Contact = asyncComponent(() => import('../views/Contact'));
 const Complains = asyncComponent(() => import('../views/Complains'));
-const SpecialForm = asyncComponent(() => import('../views/SpecialForm'));
 
-const routes = [
+export const homePage = (rol) => {
+  let component, title, name;
+  let obj = {
+    path: '/',
+  };
+
+  if (rol === 'administrador') {
+    component = Dashboard;
+    title = routesDictionary.dashboard.title;
+    name = routesDictionary.dashboard.moduleName;
+  } else {
+    component = Complains;
+    title = routesDictionary.claims.title;
+    name = routesDictionary.claims.moduleName;
+  }
+
+  obj.component = component;
+  obj.title = title;
+  obj.name = name;
+
+  return obj;
+};
+
+const moduleException = {
+  administrador: [],
+  tecnico: [routesDictionary.dashboard.moduleName],
+  usuario: [routesDictionary.dashboard.moduleName],
+};
+
+const defaultRoutes = [
   {
     path: routesDictionary.login.router,
     component: Login,
@@ -48,12 +76,15 @@ const routes = [
     title: routesDictionary.claims.title,
     name: routesDictionary.claims.moduleName,
   },
-  {
-    path: routesDictionary.specialForm.router,
-    component: SpecialForm,
-    title: routesDictionary.specialForm.title,
-    name: routesDictionary.specialForm.moduleName,
+]
+
+const routes = (rol) => {
+  if (rol) {
+    const routesList = defaultRoutes.filter((item) => !moduleException[rol].includes(item.name));
+    routesList.push(homePage(rol));
+    return routesList;
   }
-];
+  return [];
+};
 
 export default routes;
