@@ -1,12 +1,13 @@
 import { Row, Form, Button, Tabs, Col, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import './styles.scss';
 import CustomForm from '../../components/CustomForm';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AppContext } from './../../context/index';
 import AllComplains from './AllComplains';
 import ComplainsTable from './ComplainsTable/index';
+import { uploadFileWithFirebase } from './../../utils/fire';
+import './styles.scss';
 
 const itemList = () => [
 	{
@@ -60,8 +61,21 @@ function Complains() {
   const { state } = useContext(AppContext);
   const { me } = state;
   const { userInformation } = me;
-
   const [form] = Form.useForm();
+
+  const [loadingFile, setLoadingFile] = useState(false);
+
+  const [fileList, setFileList] = useState([]);
+  // const [urls, setUrls] = useState([]);
+
+  const handleFile = (e) => {
+    console.log(e.file.originFileObj);
+    setFileList(e.file.originFileObj);
+  };
+
+  const sendFiles = () => {
+    uploadFileWithFirebase(fileList, setLoadingFile);
+  };
 
   const handleSubmit = (values) => {
     console.log('Received values of form: ', values);
@@ -92,7 +106,8 @@ function Complains() {
                       <Col flex="auto">
                         <Upload
                           className="w-100"
-                          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                          action={() => {}}
+                          onChange={handleFile}
                           listType="text"
                           maxCount={1}
                         >
@@ -100,7 +115,14 @@ function Complains() {
                         </Upload>
                       </Col>
                       <Col flex="200px">
-                        <Button type="primary" htmlType="submit" size="large" className="w-100">
+                        <Button 
+                          type="primary"
+                          htmlType="submit"
+                          size="large"
+                          className="w-100"
+                          onClick={sendFiles}
+                          loading={loadingFile}
+                        >
                           Ingresar
                         </Button>
                       </Col>
