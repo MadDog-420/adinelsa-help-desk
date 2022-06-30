@@ -4,6 +4,7 @@ import {
 import PropTypes from 'prop-types';
 import getInitialValues from './utils';
 import FormItem from './FormItem';
+import LoadingComponent from '../../components/LoadingComponent';
 
 const CustomForm = (props) => {
   const {
@@ -13,7 +14,14 @@ const CustomForm = (props) => {
     handleSubmit,
     submitButton,
     requiredMark,
+    loading,
   } = props;
+
+  if (loading) {
+    return (
+      <LoadingComponent />
+    )
+  }
 
   return (
     <Form
@@ -62,6 +70,7 @@ CustomForm.propTypes = {
   submitButton: PropTypes.node,
   rowFields: PropTypes.number,
   requiredMark: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 CustomForm.defaultProps = {
@@ -71,6 +80,7 @@ CustomForm.defaultProps = {
   submitButton: undefined,
   rowFields: null,
   requiredMark: true,
+  loading: false,
 };
 
 export default CustomForm;

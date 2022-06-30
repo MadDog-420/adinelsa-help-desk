@@ -5,7 +5,7 @@ import moment from 'moment';
 
 moment.locale('es');
 
-const columns1 = [
+const columns = [
     {
       title: 'Código de reclamo',
       dataIndex: 'codigo',
@@ -55,7 +55,7 @@ const columns1 = [
     },
 ];
 
-const data1 = [
+const data = [
     {
         key: '1',
         codigo: '123456',
@@ -79,10 +79,10 @@ const data1 = [
     },
 ];
 
-function MyComplains() {
+const ComplainsTable = () => {
   return (
-    <Table columns={columns1} dataSource={data1} pagination={false} />
+    <Table columns={columns} dataSource={data} pagination={false} />
   )
 }
 
-export default MyComplains;
+export default ComplainsTable;

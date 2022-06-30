@@ -7,6 +7,8 @@ const Dashboard = asyncComponent(() => import('../views/Dashboard'));
 const Supplies = asyncComponent(() => import('../views/Supplies'));
 const Contact = asyncComponent(() => import('../views/Contact'));
 const Complains = asyncComponent(() => import('../views/Complains'));
+const ComplainDetails = asyncComponent(() => import('../views/Complains/ComplainDetails'));
+const MyAccount = asyncComponent(() => import('../views/MyAccount'));
 
 export const homePage = (rol) => {
   let component, title, name;
@@ -75,6 +77,18 @@ const defaultRoutes = [
     component: Complains,
     title: routesDictionary.claims.title,
     name: routesDictionary.claims.moduleName,
+  },
+  {
+    path: routesDictionary.claimDetails.router,
+    component: ComplainDetails,
+    title: routesDictionary.claimDetails.title,
+    name: routesDictionary.claimDetails.moduleName,
+  },
+  {
+    path: routesDictionary.account.router,
+    component: MyAccount,
+    title: routesDictionary.account.title,
+    name: routesDictionary.account.moduleName,
   },
 ]
 

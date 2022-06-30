@@ -1,7 +1,8 @@
 import { 
   DashboardOutlined, ThunderboltOutlined, 
   ExceptionOutlined,
-  LogoutOutlined
+  LogoutOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
 import routesDictionary from '../../routes/routesDict';
 
@@ -64,6 +65,13 @@ export const defaultMenus = (rol) => {
         redirection: routesDictionary.claims.router,
         name: routesDictionary.claims.moduleName,
         icon: <ExceptionOutlined />,
+      },
+      {
+        title: routesDictionary.account.title,
+        key: routesDictionary.account.router,
+        redirection: routesDictionary.account.router,
+        name: routesDictionary.account.moduleName,
+        icon: <UserOutlined />,
       }
     ];
   }

@@ -1,32 +1,34 @@
-import { Row, Col, Form, Button, Tabs, Spin, message } from 'antd';
+import { Row, Form, Button, Tabs, Col, Upload } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import './styles.scss';
-import MyComplains from './MyComplains/index';
 import CustomForm from '../../components/CustomForm';
-import { useState, useEffect } from 'react';
+import { useContext } from 'react';
+import { AppContext } from './../../context/index';
+import AllComplains from './AllComplains';
+import ComplainsTable from './ComplainsTable/index';
 
-const itemList = (types) => [
+const itemList = () => [
 	{
-    component: 'singleSelect',
-		label: 'Tipo de incidente',
-		name: 'tipoIncidente',
+		label: 'Solicitud',
+		name: 'solicitud',
 		size: 'large',
-    value: types[0].value,
-    options: types,
 		rules: [
 			{
 				required: true,
 			},
 		],
 		responsive: {
-			span: 18, 
+			xs: 24, sm: 24, md: 14, lg: 18 
 		},
 	},
-	{
-		component: 'textArea',
-		label: 'Detalle del Reclamo',
-		name: 'detalleReclamo',
+  {
+		component: 'datePicker',
+		label: 'Fecha',
+		name: 'fechaEmision',
 		size: 'large',
+    value: moment(),
+    disabled: true,
 		rules: [
 			{
 				required: true,
@@ -34,15 +36,14 @@ const itemList = (types) => [
 			},
 		],
 		responsive: {
-			span: 24,
+			xs: 24, sm: 24, md: 10, lg: 6
 		},
 	},
-  {
-		component: 'datePicker',
-		label: 'Fecha de Emisión',
-		name: 'fechaEmision',
+	{
+		component: 'textArea',
+		label: 'Detalle de la solicitud',
+		name: 'detalleSolicitud',
 		size: 'large',
-    value: moment(),
 		rules: [
 			{
 				required: true,
@@ -56,25 +57,11 @@ const itemList = (types) => [
 ];
 
 function Complains() {
-  const [form] = Form.useForm();
-  const [loading, setLoading] = useState(true);
-  const [types, setTypes] = useState([]);
+  const { state } = useContext(AppContext);
+  const { me } = state;
+  const { userInformation } = me;
 
-  useEffect(() => {
-    if (loading) {
-      fetch('http://localhost:8000/api/tipoIncidencia')
-			.then((res) => res.json())
-			.then((data) => {
-        const typeList = [];
-        data.forEach(item => {
-          typeList.push({ label: item.descripcion, value: item.cod_incidencia })
-        });
-				setTypes(typeList);
-				setLoading(false);
-			})
-      .catch(() => message.error('Error de conexión'));
-    }
-  }, [loading]);
+  const [form] = Form.useForm();
 
   const handleSubmit = (values) => {
     console.log('Received values of form: ', values);
@@ -83,39 +70,50 @@ function Complains() {
   return (
     <div className="complains-container">
       <Row>
-        <div className="title w-100 mb-3 text-white text-uppercase">Reclamos</div>
+        <div className="title w-100 mb-3 text-white text-uppercase">Solicitudes</div>
       </Row>
       <Row gutter={[16, 16]}>
-        <Tabs defaultActiveKey="1" type="card" className="w-100">
-          <Tabs.TabPane tab="Nuevo reclamo" key="1">
-            {
-              loading ? (
-                <Row justify="center">
-                  <Col className="d-flex" style={{height: '400px'}}>
-                    <Spin size="large" />
-                  </Col>
-                </Row>
-              ) : (
+        {
+          userInformation.rol === 'administrador' && (
+            <AllComplains />
+          )
+        }
+        {
+          userInformation.rol === 'usuario' && (
+            <Tabs defaultActiveKey="1" type="card" className="w-100">
+              <Tabs.TabPane tab="Nueva solicitud" key="1">
                 <CustomForm
                   form={form}
-                  itemList={itemList(types)}
+                  itemList={itemList({})}
                   handleSubmit={handleSubmit}
                   requiredMark={false}
                   submitButton={(
-                    <Row className="w-100 mt-4 mb-2" justify="center">
-                      <Button type="primary" htmlType="submit" size="large">
-                        Ingresar
-                      </Button>
-                    </Row>
+                    <>
+                      <Col flex="auto">
+                        <Upload
+                          className="w-100"
+                          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                          listType="text"
+                          maxCount={1}
+                        >
+                          <Button icon={<UploadOutlined />} className="w-100 text-right" />
+                        </Upload>
+                      </Col>
+                      <Col flex="200px">
+                        <Button type="primary" htmlType="submit" size="large" className="w-100">
+                          Ingresar
+                        </Button>
+                      </Col>
+                    </>
                   )}
                 />
-              )
-            }
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Mis reclamos" key="2">
-            <MyComplains />
-          </Tabs.TabPane>
-        </Tabs>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="Mis solicitudes" key="2">
+                <ComplainsTable />
+              </Tabs.TabPane>
+            </Tabs>
+          )
+        }
       </Row>
     </div>
   )
