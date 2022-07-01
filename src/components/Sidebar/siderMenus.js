@@ -17,10 +17,10 @@ export const defaultMenus = (rol) => {
         icon: <DashboardOutlined />,
       },
       {
-        title: routesDictionary.supplies.title,
-        key: routesDictionary.supplies.router,
-        redirection: routesDictionary.supplies.router,
-        name: routesDictionary.supplies.moduleName,
+        title: routesDictionary.solutions.title,
+        key: routesDictionary.solutions.router,
+        redirection: routesDictionary.solutions.router,
+        name: routesDictionary.solutions.moduleName,
         icon: <ThunderboltOutlined />,
       },
       {
@@ -42,10 +42,10 @@ export const defaultMenus = (rol) => {
         icon: <DashboardOutlined />,
       },
       {
-        title: routesDictionary.supplies.title,
-        key: routesDictionary.supplies.router,
-        redirection: routesDictionary.supplies.router,
-        name: routesDictionary.supplies.moduleName,
+        title: routesDictionary.solutions.title,
+        key: routesDictionary.solutions.router,
+        redirection: routesDictionary.solutions.router,
+        name: routesDictionary.solutions.moduleName,
         icon: <ThunderboltOutlined />,
       },
       {

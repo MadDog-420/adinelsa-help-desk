@@ -4,7 +4,7 @@ import asyncComponent from './../HOC/AsyncComponent/index';
 const Login = asyncComponent(() => import('../views/Login'));
 const Register = asyncComponent(() => import('../views/Login/Register'));
 const Dashboard = asyncComponent(() => import('../views/Dashboard'));
-const Supplies = asyncComponent(() => import('../views/Supplies'));
+const Solutions = asyncComponent(() => import('../views/Solutions'));
 const Contact = asyncComponent(() => import('../views/Contact'));
 const Complains = asyncComponent(() => import('../views/Complains'));
 const ComplainDetails = asyncComponent(() => import('../views/Complains/ComplainDetails'));
@@ -61,10 +61,10 @@ const defaultRoutes = [
     name: routesDictionary.dashboard.moduleName,
   },
   {
-    path: routesDictionary.supplies.router,
-    component: Supplies,
-    title: routesDictionary.supplies.title,
-    name: routesDictionary.supplies.moduleName,
+    path: routesDictionary.solutions.router,
+    component: Solutions,
+    title: routesDictionary.solutions.title,
+    name: routesDictionary.solutions.moduleName,
   },
   {
     path: routesDictionary.contact.router,

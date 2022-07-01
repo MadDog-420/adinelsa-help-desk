@@ -14,10 +14,10 @@ const routesDictionary = {
       title: 'Tablero',
       moduleName: 'tablero'
     },
-    supplies: {
-      router: '/suministros',
-      title: 'Suministros',
-      moduleName: 'suministros'
+    solutions: {
+      router: '/soluciones',
+      title: 'Soluciones',
+      moduleName: 'soluciones'
     },
     contact: {
       router: '/contacto',
