@@ -5,9 +5,9 @@
     "name": "John",
     "apellidoPaterno": "Smith",
     "apellidoMaterno": "Doe",
-    "tipoDocumento": "dni",
+    "tipoDocumento": "DNI",
     "numeroDocumento": "34322674",
     "email": "admin@adinelsa.com",
-    "rol": "usuario"
+    "rol": "administrador"
   }
 }

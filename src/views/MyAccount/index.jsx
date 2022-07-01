@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from './../../context';
-import { Row, Col, Form, message, Button } from 'antd';
+import { Row, Col, Form, Button } from 'antd';
 import moment from 'moment';
 import CustomForm from "../../components/CustomForm";
+import { getData, transformToOptions } from './../../utils/tools';
 
-const itemList = (types, userInformation) => [
+const itemList = (types, departamentos, provincias, distritos, userInformation) => [
   {
 		label: 'Nombre',
 		name: 'name',
@@ -144,12 +145,7 @@ const itemList = (types, userInformation) => [
 		size: 'large',
     value: userInformation.departamento,
     placeholder: 'Selecciona un departamento',
-    options: [
-      {
-        label: 'Amazonas',
-        value: '1',
-      },
-    ],
+    options: departamentos,
 		rules: [
 			{
 				required: true,
@@ -166,12 +162,7 @@ const itemList = (types, userInformation) => [
 		size: 'large',
     value: userInformation.provincia,
     placeholder: 'Selecciona una provincia',
-    options: [
-      {
-        label: 'Chachapoyas',
-        value: '1',
-      },
-    ],
+    options: provincias,
 		rules: [
 			{
 				required: true,
@@ -188,12 +179,7 @@ const itemList = (types, userInformation) => [
 		size: 'large',
     value: userInformation.distrito,
     placeholder: 'Selecciona un distrito',
-    options: [
-      {
-        label: 'Chachapoyas',
-        value: '1',
-      },
-    ],
+    options: distritos,
 		rules: [
 			{
 				required: true,
@@ -212,23 +198,38 @@ function MyAccount(){
 
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(true);
+  const [loadingDep, setLoadingDep] = useState(true);
+  const [loadingProv, setLoadingProv] = useState(true);
+  const [loadingDist, setLoadingDist] = useState(true);
+
   const [types, setTypes] = useState([]);
+  const [departamentos, setDepartamentos] = useState([]);
+  const [provincias, setProvincias] = useState([]);
+  const [distritos, setDistritos] = useState([]);
 
   useEffect(() => {
-    if (loading) {
-      fetch('http://localhost:8000/api/tipoIncidencia')
-			.then((res) => res.json())
-			.then((data) => {
-        const typeList = [];
-        data.forEach(item => {
-          typeList.push({ label: item.descripcion, value: item.cod_incidencia })
-        });
-				setTypes(typeList);
-				setLoading(false);
-			})
-      .catch(() => message.error('Error de conexión'));
-    }
+    getData(loading, setLoading, 'http://localhost:8000/api/documento', (data) => {
+      setTypes(transformToOptions(data, 'tipo_doc', 'IdDocumento'));
+    })
   }, [loading]);
+
+  useEffect(() => {
+    getData(loadingDep, setLoadingDep, 'http://localhost:8000/api/departamento', (data) => {
+      setDepartamentos(transformToOptions(data, 'departamento', 'IdDepartamento'));
+    })
+  }, [loadingDep]);
+
+  useEffect(() => {
+    getData(loadingProv, setLoadingProv, 'http://localhost:8000/api/provincia', (data) => {
+      setProvincias(transformToOptions(data, 'provincia', 'IdProvincia'));
+    })
+  }, [loadingProv]);
+
+  useEffect(() => {
+    getData(loadingDist, setLoadingDist, 'http://localhost:8000/api/distrito', (data) => {
+      setDistritos(transformToOptions(data, 'distrito', 'IdDistrito'));
+    })
+  }, [loadingDist]);
 
   return (
     <div className="account-container">
@@ -239,10 +240,10 @@ function MyAccount(){
         <Col span={24}>
           <div className="custom-shadow p-3 bg-white border-round">
             <CustomForm
-              loading={loading}
+              loading={loading || loadingDep || loadingProv || loadingDist}
               form={form}
               requiredMark={false}
-              itemList={itemList(types, userInformation)}
+              itemList={itemList(types, departamentos, provincias, distritos, userInformation)}
               submitButton={(
                 <Col span={24}>
                   <Row justify="end">

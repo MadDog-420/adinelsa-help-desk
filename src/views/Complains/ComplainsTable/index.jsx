@@ -7,7 +7,7 @@ moment.locale('es');
 
 const columns = [
     {
-      title: 'Código de reclamo',
+      title: 'Código de solicitud',
       dataIndex: 'codigo',
       key: 'codigo',
       render: (text) => <a>{text}</a>,
@@ -18,12 +18,12 @@ const columns = [
       key: 'fecha',
     },
     {
-      title: 'Tipo de reclamo',
+      title: 'Tipo de solicitud',
       dataIndex: 'tipo',
       key: 'tipo',
     },
     {
-      title: 'Estado de reclamo',
+      title: 'Estado de solicitud',
       key: 'estado',
       dataIndex: 'estado',
       render: (_, { estado }) => (

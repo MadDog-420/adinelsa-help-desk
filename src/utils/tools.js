@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import {
   API_URL,
   AUTH_TOKEN, EXP_TOKEN, REFRESH_TOKEN,
@@ -27,3 +28,22 @@ export const logout = (setLogin) => {
 };
 
 export const apiUrl = API_URL.slice(0, -1);
+
+export const getData = (loading, setLoading, callback, thenCallback) => {
+  if (loading) {
+    fetch(callback)
+      .then((response) => response.json())
+      .then((data) => {
+        thenCallback(data);
+        setLoading(false);
+      }).catch(() => message.error('Error de conexión'));
+  }
+};
+
+export const transformToOptions = (data, labelName, valueName) => {
+  const typeList = [];
+  data.forEach(item => {
+    typeList.push({ label: item[labelName], value: item[valueName] })
+  });
+  return typeList;
+}
