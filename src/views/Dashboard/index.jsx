@@ -1,7 +1,4 @@
 import { Row, Col } from 'antd';
-import { 
-  ThunderboltOutlined, FileOutlined, CaretUpOutlined, CaretDownOutlined
-} from '@ant-design/icons';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -14,8 +11,9 @@ import {
 import { Bar } from 'react-chartjs-2';
 import { faker } from '@faker-js/faker';
 import './styles.scss';
-import StateComponent from '../../components/StateComponent';
+// import StateComponent from '../../components/StateComponent';
 
+/*
 const getComparison = (fValue, sValue) => {
   if (fValue > sValue) {
     return 'lost';
@@ -34,12 +32,14 @@ const getPercentage = (fValue, sValue) => {
   return '';
 }
 
+
 const billingDataFormat = (fValue, sValue) => ({
   current: 'S/.'+fValue,
   last: 'S/.'+sValue,
   percent: getPercentage(fValue, sValue),
   state: getComparison(fValue, sValue),
 })
+*/
 
 ChartJS.register(
   CategoryScale,
@@ -62,17 +62,13 @@ export const options = {
     tooltip: {
       callbacks: {
         label: (item) =>
-          `${item.dataset.label}: ${item.formattedValue} KWh`,
+          `${item.dataset.label}: ${item.formattedValue}`,
       },
     },
   },
   scales: {
     y: {
       min: 0,
-      title: {
-        display: true,
-        text: 'KWh',
-      },
     },
   },
   maintainAspectRatio: false,
@@ -84,12 +80,12 @@ export const data = {
   labels,
   datasets: [
     {
-      label: 'Año 2021',
+      label: 'Incidencias',
       data: labels.map(() => faker.datatype.number({ min: 50, max: 200 })),
       backgroundColor: '#0eb2bb80',
     },
     {
-      label: 'Año 2022',
+      label: 'Requerimientos',
       data: labels.map(() => faker.datatype.number({ min: 40, max: 200 })),
       backgroundColor: '#ecbe2c80',
     },
@@ -97,7 +93,7 @@ export const data = {
 };
 
 function Dashboard() {
-  const billingData = billingDataFormat(160, 140);
+  // const billingData = billingDataFormat(160, 140);
   return (
     <div className="dashboard-container">
       <Row>
@@ -106,11 +102,11 @@ function Dashboard() {
       <Row gutter={[16, 16]}>
         <Col span={24}>
           <div className="custom-shadow p-3 pb-8 bg-white border-round" style={{maxHeight: '400px'}}>
-            <div className="text-bold mb-2 font-large">Histórico de consumo</div>
+            <div className="text-bold mb-2 font-large">Histórico de solicitudes</div>
             <Bar options={options} data={data} />
           </div>
         </Col>
-        <Col xs={24} sm={24} md={12} className="h-initial">
+        {/* <Col xs={24} sm={24} md={12} className="h-initial">
           <div className="custom-shadow p-3 h-100 bg-white border-round">
             <div className="text-bold mb-2 font-large">Última facturación</div>
             <div className="billing font-xx-large mb-1">
@@ -136,7 +132,7 @@ function Dashboard() {
             <div className="font-x-large mb-1"><FileOutlined /> Lorem ipsum dolor sit amet</div>
             <div className="font-regular">Estado: <StateComponent type={'warning'}>En revisión</StateComponent></div>
           </div>
-        </Col>
+        </Col> */}
       </Row>
     </div>
   )

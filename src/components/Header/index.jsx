@@ -5,7 +5,7 @@ import Sidebar from '../Sidebar';
 const { Content } = Layout;
 
 const HeaderComponent = ({
-    userInformation, setUserInformation, children, rol,
+  setLoginState, userInformation, setUserInformation, children, rol,
 }) => {
     const [collapsedResponsive] = useState(true);
 
@@ -13,6 +13,7 @@ const HeaderComponent = ({
       <div className="overflow-hidden vh-100">
         <Layout>
           <Sidebar
+            setLoginState={setLoginState}
             collapsedResponsive={collapsedResponsive}
             userInformation={userInformation}
             setUserInformation={setUserInformation}

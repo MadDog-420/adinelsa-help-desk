@@ -4,7 +4,6 @@ import asyncComponent from './../HOC/AsyncComponent/index';
 const Login = asyncComponent(() => import('../views/Login'));
 const Register = asyncComponent(() => import('../views/Login/Register'));
 const Dashboard = asyncComponent(() => import('../views/Dashboard'));
-const Solutions = asyncComponent(() => import('../views/Solutions'));
 const Contact = asyncComponent(() => import('../views/Contact'));
 const Complains = asyncComponent(() => import('../views/Complains'));
 const ComplainDetails = asyncComponent(() => import('../views/Complains/ComplainDetails'));
@@ -16,7 +15,7 @@ export const homePage = (rol) => {
     path: '/',
   };
 
-  if (rol === 'administrador') {
+  if (rol === '1') {
     component = Dashboard;
     title = routesDictionary.dashboard.title;
     name = routesDictionary.dashboard.moduleName;
@@ -33,10 +32,10 @@ export const homePage = (rol) => {
   return obj;
 };
 
-const moduleException = {
-  administrador: [],
-  tecnico: [routesDictionary.dashboard.moduleName],
-  usuario: [routesDictionary.dashboard.moduleName],
+const moduleException = (rol) => {
+  if (rol !== '1') {
+    return [routesDictionary.dashboard.moduleName];
+  }
 };
 
 const defaultRoutes = [
@@ -59,12 +58,6 @@ const defaultRoutes = [
     component: Dashboard,
     title: routesDictionary.dashboard.title,
     name: routesDictionary.dashboard.moduleName,
-  },
-  {
-    path: routesDictionary.solutions.router,
-    component: Solutions,
-    title: routesDictionary.solutions.title,
-    name: routesDictionary.solutions.moduleName,
   },
   {
     path: routesDictionary.contact.router,
@@ -93,12 +86,9 @@ const defaultRoutes = [
 ]
 
 const routes = (rol) => {
-  if (rol) {
-    const routesList = defaultRoutes.filter((item) => !moduleException[rol].includes(item.name));
-    routesList.push(homePage(rol));
-    return routesList;
-  }
-  return [];
+  const routesList = defaultRoutes.filter((item) => !moduleException(rol).includes(item.name));
+  routesList.push(homePage(rol));
+  return routesList;
 };
 
 export default routes;

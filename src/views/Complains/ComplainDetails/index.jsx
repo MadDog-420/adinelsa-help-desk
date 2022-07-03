@@ -1,10 +1,12 @@
 import { Form, Row, Col, Button } from 'antd';
+import { LeftOutlined } from '@ant-design/icons';
 import { useContext, useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AppContext } from './../../../context/index';
 import moment from 'moment';
 import CustomForm from './../../../components/CustomForm/index';
 import { getData, transformToOptions } from '../../../utils/tools';
+import '../styles.scss';
 
 const itemList = (categorias, estados, tipos, impactos, prioridad, data) => [
   {
@@ -222,10 +224,63 @@ const itemList = (categorias, estados, tipos, impactos, prioridad, data) => [
 	},
 ];
 
+const solutionItems = () => [
+  {
+		label: 'Descripción',
+		name: 'descripcionSolucion',
+		size: 'large',
+		rules: [
+			{
+				required: true,
+        message: 'Campo requerido',
+			},
+		],
+		responsive: {
+			xs: 24, sm: 24, md: 14, lg: 18 
+		},
+	},
+  {
+		component: 'datePicker',
+		label: 'Fecha',
+		name: 'fechaActualizado',
+		size: 'large',
+    value: moment(),
+    disabled: true,
+		rules: [
+			{
+				required: true,
+        message: 'Campo requerido',
+			},
+		],
+		responsive: {
+			xs: 24, sm: 24, md: 10, lg: 6
+		},
+	},
+	{
+		component: 'textArea',
+		label: 'Actividades',
+		name: 'actividadesSolucion',
+		size: 'large',
+		rules: [
+			{
+				required: true,
+        message: 'Campo requerido',
+			},
+		],
+		responsive: {
+			span: 24,
+		},
+	},
+];
+
 const solicitud = {
   codigo: 'SO-001',
-  owner: "2",
-  detalle: "Lorem ipsum",
+  owner: '2',
+  detalle: 'Lorem ipsum',
+  fechaEmision: '28-6-2022',
+  fechaActualizacion: null,
+  actividadesSolucion: 'Lorem ipsum',
+  
 }
 
 function ComplainDetails() {
@@ -250,6 +305,10 @@ function ComplainDetails() {
   const [impactos, setImpactos] = useState([]);
   const [prioridad, setPrioridad] = useState([]);
 
+  const handleSubmit = (values) => {
+    console.log(values);
+  };
+
   useEffect(() => {
     if (userInformation.rol !== 'administrador') {
       if (data && data.owner !== userInformation.id) {
@@ -260,7 +319,6 @@ function ComplainDetails() {
 
   useEffect(() => {
     if (loading) {
-      console.log('params ', params);
       setData(solicitud);
       setLoading(false);
     }
@@ -298,31 +356,45 @@ function ComplainDetails() {
 
   return (
     <div className="complains-container">
-      <Row>
-        <div className="title w-100 mb-3 text-white text-uppercase">Solicitud</div>
+      <Row className="mb-3">
+        <div className="title w-100 text-white text-uppercase">Solicitud</div>
+        <Col span={24}>
+          <Button type="link" className="return-button" icon={<LeftOutlined />} onClick={() => navigate('/solicitudes', { replace: true })}>Volver</Button>
+        </Col>
       </Row>
       <Row gutter={[16, 16]}>
         <Col span={24}>
           <div className="p-3 bg-white border-round">
-            <div className="text-bold mb-2 font-large">Detalle</div>
+            <div className="text-bold mb-2 font-large">Detalles</div>
             <CustomForm
               loading={!data || loading || loadingCategoria || loadingEstados || loadingTipos || loadingImpactos || loadingPrioridad}
               form={form}
               itemList={itemList(categorias, estados, tipos, impactos, prioridad, data)}
               requiredMark={false}
-              submitButton={(
-                <Col span={24}>
-                  <Row>
-                    <Col flex="200px">
-                      <Button type="primary" htmlType="submit" size="large" className="w-100">
-                        Guardar
-                      </Button>
-                    </Col>
-                  </Row>
-                </Col>
-              )}
+              handleSubmit={handleSubmit}
             />
           </div>
+        </Col>
+        <Col span={24}>
+          <div className="p-3 bg-white border-round">
+            <div className="text-bold mb-2 font-large">Solución</div>
+            <CustomForm
+              loading={!data || loading || loadingCategoria || loadingEstados || loadingTipos || loadingImpactos || loadingPrioridad}
+              form={form}
+              itemList={solutionItems()}
+              requiredMark={false}
+              handleSubmit={handleSubmit}
+            />
+          </div>
+        </Col>
+        <Col span={24}>
+          <Row justify="end">
+            <Col flex="200px">
+              <Button type="primary" htmlType="submit" size="large" className="w-100" onClick={form.submit}>
+                Guardar
+              </Button>
+            </Col>
+          </Row>
         </Col>
       </Row>
     </div>

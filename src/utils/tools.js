@@ -8,6 +8,10 @@ export function getAuthTokenName() {
   return AUTH_TOKEN;
 }
 
+export function setAuthToken(token) {
+  localStorage.setItem(AUTH_TOKEN, token);
+}
+
 export function getRefreshTokenName() {
   return REFRESH_TOKEN;
 }
@@ -22,9 +26,7 @@ export function isNull(value) {
 
 export const logout = (setLogin) => {
   localStorage.removeItem(getAuthTokenName());
-  localStorage.removeItem(getRefreshTokenName());
-  localStorage.removeItem(getExpirationTokenName());
-  setLogin('');
+  setLogin(false);
 };
 
 export const apiUrl = API_URL.slice(0, -1);

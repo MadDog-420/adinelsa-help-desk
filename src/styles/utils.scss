@@ -109,7 +109,7 @@ $breakpoints: $xs, $sm, $md, $lg, $xl, $xxl;
         padding: $padding;
       }
       .pl-#{$i} {
-        padding-left: $padding;
+        padding-left: $padding !important;
       }
       .pr-#{$i} {
         padding-right: $padding;
@@ -243,4 +243,11 @@ font-size: 40px;
 
 .overflow-hidden{
   overflow: hidden;
+}
+
+.loading-context{
+  width: 100vw;
+  .ant-spin{
+    margin: auto;
+  }
 }

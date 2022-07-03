@@ -4,7 +4,9 @@ import {
 import PropTypes from 'prop-types';
 import { Spin } from 'antd';
 import { getAuthTokenName, logout } from '../utils/tools';
-import userData from './profile-response.json';
+// import userData from './profile-response.json';
+
+export const AppContext = createContext();
 
 const initialState = {
   me: {
@@ -13,10 +15,6 @@ const initialState = {
     },
   },
 };
-
-export const AppContext = createContext({
-  state: initialState,
-});
 
 const AppContextProvider = (props) => {
   const { children, setLoginState, setRol } = props;
@@ -27,13 +25,17 @@ const AppContextProvider = (props) => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    if (loading) {
-      setData(userData.data);
-      setRol(userData.data.rol);
+    if (loading && authToken && authToken !== '') {
+      fetch('http://localhost:8000/api/usuario/'+authToken)
+        .then((res) => res.json())
+			  .then((data) => {
+          setData(data[0]);
+          setLoading(false);
+        });
+    } else {
       setLoading(false);
-      setError(false);
     }
-  }, [loading, setRol]);
+  }, [authToken, loading, setRol]);
 
   const reducer = (state, action) => {
     switch (action.type) {
@@ -43,6 +45,7 @@ const AppContextProvider = (props) => {
       case 'updateInfo':
         return { me: action.data.me };
       case 'refetch':
+        setLoading(true);
         return state;
       default:
         throw new Error();
@@ -55,16 +58,20 @@ const AppContextProvider = (props) => {
     if (error) {
       logout(setLoginState);
     } else if (data) {
+      setRol(data.IdRol.toString());
       dispatch({
         type: 'updateInfo',
         data: { me: { userInformation: data } },
       });
     }
-  }, [data, error, authToken, setLoginState]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, error, authToken]);
 
-  if (loading || !data) {
+  if (loading) {
     return (
-    <div className="vh-100 d-flex"><Spin className="m-auto" size="large" /></div>
+      <div className="w-100 vh-100 d-flex loading-context">
+        <Spin className="m-auto" size="large" />
+      </div>
     );
   }
 

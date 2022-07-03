@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Row, Col, Form, Image, Button, message } from 'antd';
 import LoginImage from '../../media/images/login.jpg';
 import Logo from '../../media/adinelsa-logo.png';
@@ -6,6 +6,9 @@ import './styles.scss';
 import { useNavigate } from 'react-router-dom';
 import routesDictionary from './../../routes/routesDict';
 import CustomForm from '../../components/CustomForm';
+import { PropTypes } from 'prop-types';
+import { AppContext } from './../../context/index';
+import { setAuthToken } from '../../utils/tools';
 
 const itemList = [
 	{
@@ -39,7 +42,9 @@ const itemList = [
 	},
 ];
 
-function Login() {
+function Login(props) {
+  const { setLoginState } = props;
+  const { dispatch } = useContext(AppContext);
 	const [form] = Form.useForm();
 	const navigate = useNavigate();
 	const [loading, setLoading] = useState(false);
@@ -50,6 +55,7 @@ function Login() {
 
 	const handleSubmit = (values) => {
 		setLoading(true);
+
 		const config = {
 			method: 'POST',
 			body: JSON.stringify(values),
@@ -57,15 +63,18 @@ function Login() {
 				'Content-Type': 'application/json',
 			},
 		}
-		fetch('http://localhost:8000/api/user', config)
+
+		fetch('http://localhost:8000/api/login', config)
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.length > 0) {
-					navigate(routesDictionary.dashboard.router);
+          setAuthToken(data[0].IdUsuario);
+          dispatch({ type: 'refetch' });
+					setLoginState(true);
 				} else {
 					message.error('Correo o contraseña incorrectos');
 				}
-				setLoading(false); 
+				setLoading(false);
 			});
 	};
 
@@ -118,6 +127,10 @@ function Login() {
 			</Row>
 		</div>
 	)
+}
+
+Login.propTypes = {
+  setLoginState: PropTypes.func.isRequired,
 }
 
 export default Login;

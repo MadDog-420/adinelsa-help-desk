@@ -1,27 +1,37 @@
 import PropTypes from 'prop-types';
 import HeaderComponent from './../components/Header/index';
+import { Navigate } from "react-router-dom";
+import routesDictionary from './routesDict';
 
 const routeTypes = {
   public: (props) => {
     const {
       renderProps, component: Component,
-      setLoginState,
+      isLogin, setLoginState,
     } = props;
+
+    if (isLogin) {
+      return (
+        <Navigate to={'/'} replace={true} />
+      );
+    }
 
     return <Component setLoginState={setLoginState} {...renderProps} />;
   },
   private: (props) => {
     const {
       renderProps, component: Component,
-      isLogin = true, setLoginState, rol,
+      isLogin, setLoginState, rol,
     } = props;
 
     if (!isLogin) {
-      return (null);
+      return (
+        <Navigate to={routesDictionary.login.router} replace={true} />
+      );
     }
 
     return (
-      <HeaderComponent rol={rol}>
+      <HeaderComponent rol={rol} setLoginState={setLoginState}>
         <Component setLoginState={setLoginState} {...renderProps} />
       </HeaderComponent>
     );
@@ -31,7 +41,7 @@ const routeTypes = {
 const MakeRouteWithSubRoutes = (props) => {
   const {
     path, title, rol,
-    component: Component, type, login, setLoginState, userInformation, groups, setGroups,
+    component: Component, type, isLogin, setLoginState, userInformation, groups, setGroups,
   } = props;
   document.title = title;
   return (
@@ -40,7 +50,7 @@ const MakeRouteWithSubRoutes = (props) => {
       path,
       type,
       title,
-      login,
+      isLogin,
       setLoginState,
       userInformation,
       groups,
@@ -59,7 +69,7 @@ MakeRouteWithSubRoutes.propTypes = {
   setLoginState: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   name: PropTypes.string,
-  rol: PropTypes.string.isRequired,
+  rol: PropTypes.string,
 };
 
 MakeRouteWithSubRoutes.defaultProps = {
@@ -67,6 +77,7 @@ MakeRouteWithSubRoutes.defaultProps = {
   type: 'private',
   isLogin: false,
   name: '',
+  rol: undefined,
 };
 
 export default MakeRouteWithSubRoutes;

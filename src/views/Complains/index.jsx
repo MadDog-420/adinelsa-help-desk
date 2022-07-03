@@ -88,12 +88,12 @@ function Complains() {
       </Row>
       <Row gutter={[16, 16]}>
         {
-          userInformation.rol === 'administrador' && (
+          userInformation.IdRol === 1 && (
             <AllComplains />
           )
         }
         {
-          userInformation.rol === 'usuario' && (
+          userInformation.IdRol === 3 && (
             <Tabs defaultActiveKey="1" type="card" className="w-100">
               <Tabs.TabPane tab="Nueva solicitud" key="1">
                 <CustomForm

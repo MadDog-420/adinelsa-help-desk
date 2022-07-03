@@ -14,11 +14,6 @@ const routesDictionary = {
       title: 'Tablero',
       moduleName: 'tablero'
     },
-    solutions: {
-      router: '/soluciones',
-      title: 'Soluciones',
-      moduleName: 'soluciones'
-    },
     contact: {
       router: '/contacto',
       title: 'Contacto',
@@ -33,11 +28,6 @@ const routesDictionary = {
       router: '/solicitudes/:id',
       title: 'Detalle de solicitud',
       moduleName: 'detalleSolicitudes'
-    },
-    specialForm: {
-      router: '/especial',
-      title: 'Formularios especiales',
-      moduleName: 'especial'
     },
     account: {
       router: '/miCuenta',

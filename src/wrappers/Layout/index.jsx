@@ -7,7 +7,7 @@ import NoAccessView from './../../views/NoAccess';
 import './styles.scss';
 
 function CustomLayout(props) {
-  const { setLoginState } = props;
+  const { isLogin, setLoginState } = props;
   const [rol, setRol] = useState();
   return (
     [
@@ -25,6 +25,8 @@ function CustomLayout(props) {
                       title={route.title}
                       type={route.type}
                       rol={rol}
+                      isLogin={isLogin}
+                      setLoginState={setLoginState}
                       {...props}
                     />
                   )}>

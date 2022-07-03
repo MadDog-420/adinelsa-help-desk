@@ -1,5 +1,5 @@
 import { 
-  DashboardOutlined, ThunderboltOutlined, 
+  DashboardOutlined, 
   ExceptionOutlined,
   LogoutOutlined,
   UserOutlined,
@@ -7,7 +7,7 @@ import {
 import routesDictionary from '../../routes/routesDict';
 
 export const defaultMenus = (rol) => {
-  if (rol === 'administrador') {
+  if (rol === '1') {
     return [
       {
         title: routesDictionary.dashboard.title,
@@ -15,13 +15,6 @@ export const defaultMenus = (rol) => {
         redirection: routesDictionary.dashboard.router,
         name: routesDictionary.dashboard.moduleName,
         icon: <DashboardOutlined />,
-      },
-      {
-        title: routesDictionary.solutions.title,
-        key: routesDictionary.solutions.router,
-        redirection: routesDictionary.solutions.router,
-        name: routesDictionary.solutions.moduleName,
-        icon: <ThunderboltOutlined />,
       },
       {
         title: routesDictionary.claims.title,
@@ -32,7 +25,7 @@ export const defaultMenus = (rol) => {
       }
     ];
   }
-  if (rol === 'tecnico') {
+  if (rol === '2') {
     return [
       {
         title: routesDictionary.dashboard.title,
@@ -40,13 +33,6 @@ export const defaultMenus = (rol) => {
         redirection: routesDictionary.dashboard.router,
         name: routesDictionary.dashboard.moduleName,
         icon: <DashboardOutlined />,
-      },
-      {
-        title: routesDictionary.solutions.title,
-        key: routesDictionary.solutions.router,
-        redirection: routesDictionary.solutions.router,
-        name: routesDictionary.solutions.moduleName,
-        icon: <ThunderboltOutlined />,
       },
       {
         title: routesDictionary.claims.title,
@@ -57,7 +43,7 @@ export const defaultMenus = (rol) => {
       }
     ];
   }
-  if (rol === 'usuario') {
+  if (rol === '3') {
     return [
       {
         title: routesDictionary.claims.title,
@@ -81,8 +67,8 @@ export const defaultMenus = (rol) => {
 export const footerMenus = [
   {
     title: 'Cerrar sesión',
-    key: routesDictionary.login.router,
-    redirection: routesDictionary.login.router,
+    key: 'logout',
+    redirection: 'logout',
     name: routesDictionary.login.moduleName,
     icon: <LogoutOutlined />,
   }

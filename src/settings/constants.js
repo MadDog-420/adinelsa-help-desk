@@ -1,4 +1,4 @@
-export const AUTH_TOKEN = '';
+export const AUTH_TOKEN = 'authToken';
 export const REFRESH_TOKEN = 'refreshToken';
 export const EXP_TOKEN = 'expirationToken';
 

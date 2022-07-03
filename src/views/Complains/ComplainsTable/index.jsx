@@ -1,16 +1,41 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import { Table, Space, Tag } from 'antd';
+import { Table, Tag } from 'antd';
 import 'moment/locale/es';
 import moment from 'moment';
+import { Button } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 moment.locale('es');
 
-const columns = [
+const estados = {
+  Registrado: 'blue',
+  Activo: 'cyan',
+  Suspendido: 'orange',
+  Asignado: 'geekblue',
+  Cerrado: 'red',
+  Escalado: 'purple',
+  Resuelto: 'green',
+}
+
+const columns = (navigate) => [
     {
       title: 'Código de solicitud',
       dataIndex: 'codigo',
       key: 'codigo',
-      render: (text) => <a>{text}</a>,
+      render: (text) => (
+        <Button type="link" className="pl-0" onClick={() => navigate(text, { replace: true })}>
+          {text}
+        </Button>
+      ),
+    },
+    {
+      title: 'Dueño',
+      dataIndex: 'owner',
+      key: 'owner',
+    },
+    {
+      title: 'Detalle',
+      dataIndex: 'detalle',
+      key: 'detalle',
     },
     {
       title: 'Fecha de registro',
@@ -26,62 +51,60 @@ const columns = [
       title: 'Estado de solicitud',
       key: 'estado',
       dataIndex: 'estado',
-      render: (_, { estado }) => (
-        <>
-          {estado.map((tag) => {
-            let color = tag.length > 7 ? 'green' : 'geekblue';
-  
-            if (tag === 'rechazado') {
-              color = 'volcano';
-            }
-  
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
+      render: (text) => {
+        const color = estados[text];
+        return (
+          <Tag color={color} key={text}>
+            {text.toUpperCase()}
+          </Tag>
+        );
+      },
     },
     {
-      title: 'Resultado',
-      key: 'resultado',
+      title: 'Acción',
+      key: 'action',
       render: (_, record) => (
-        <Space size="middle">
-          <a>Descargar</a>
-        </Space>
+        <Button type="link" className="pl-0" onClick={() => navigate(record.codigo, { replace: true })}>
+          Ver más
+        </Button>
       ),
     },
 ];
 
-const data = [
-    {
-        key: '1',
-        codigo: '123456',
-        fecha: moment().format('DD/MM/yyyy'),
-        tipo: 'New York No. 1 Lake Park',
-        estado: ['aprovado'],
-    },
-    {
-        key: '2',
-        codigo: '123456',
-        fecha: moment().format('DD/MM/yyyy'),
-        tipo: 'New York No. 1 Lake Park',
-        estado: ['enviado'],
-    },
-    {
-        key: '3',
-        codigo: '123456',
-        fecha: moment().format('DD/MM/yyyy'),
-        tipo: 'New York No. 1 Lake Park',
-        estado: ['rechazado'],
-    },
-];
+const solicitud = [{
+  codigo: 'SO-001',
+  owner: 2,
+  ownerName: 'Frank Castle',
+  detalle: 'Lorem ipsum',
+  fechaEmision: '2016-01-01',
+  tipo: 'Software',
+  estado: 'Asignado',
+  fechaActualizacion: null,
+  actividadesSolucion: 'Lorem ipsum',
+}];
+
+const dataSource = (data) => {
+  const formattedData = [];
+  data.forEach((item, index) => {
+    formattedData.push(
+      {
+        key: index,
+        codigo: item.codigo,
+        owner: item.ownerName,
+        detalle: item.detalle,
+        fecha: moment(item.fechaEmision).format('DD/MM/yyyy'),
+        tipo: item.tipo,
+        estado: item.estado,
+      }
+    )
+  });
+  return formattedData;
+};
 
 const ComplainsTable = () => {
+  const navigate = useNavigate();
   return (
-    <Table columns={columns} dataSource={data} pagination={false} />
+    <Table columns={columns(navigate)} dataSource={dataSource(solicitud)} pagination={false} />
   )
 }
 
