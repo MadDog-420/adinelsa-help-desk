@@ -36,6 +36,7 @@ const moduleException = (rol) => {
   if (rol !== '1') {
     return [routesDictionary.dashboard.moduleName];
   }
+  return [];
 };
 
 const defaultRoutes = [

@@ -15,6 +15,7 @@ const CustomForm = (props) => {
     submitButton,
     requiredMark,
     loading,
+    onChangedValues,
   } = props;
 
   if (loading) {
@@ -33,6 +34,7 @@ const CustomForm = (props) => {
       onFinish={handleSubmit}
       initialValues={getInitialValues(itemList)}
       requiredMark={requiredMark}
+      onValuesChange={(changedValues) => onChangedValues(changedValues)}
     >
       <Row gutter={20}>
         {itemList.map((item) => (
@@ -71,6 +73,7 @@ CustomForm.propTypes = {
   rowFields: PropTypes.number,
   requiredMark: PropTypes.bool,
   loading: PropTypes.bool,
+  onChangedValues: PropTypes.func,
 };
 
 CustomForm.defaultProps = {
@@ -81,6 +84,7 @@ CustomForm.defaultProps = {
   rowFields: null,
   requiredMark: true,
   loading: false,
+  onChangedValues: () => {},
 };
 
 export default CustomForm;

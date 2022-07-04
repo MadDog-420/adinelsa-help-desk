@@ -42,10 +42,14 @@ export const getData = (loading, setLoading, callback, thenCallback) => {
   }
 };
 
-export const transformToOptions = (data, labelName, valueName) => {
+export const transformToOptions = (data, labelName, valueName, other) => {
   const typeList = [];
   data.forEach(item => {
-    typeList.push({ label: item[labelName], value: item[valueName] })
+    const object = { label: item[labelName], value: item[valueName], other: item[other] };
+    if (other) {
+      object[other] = item[other];
+    }
+    typeList.push(object)
   });
   return typeList;
 }

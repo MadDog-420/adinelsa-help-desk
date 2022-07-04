@@ -1,4 +1,4 @@
-import { Row, Form, Button, Tabs, Col, Upload } from 'antd';
+import { Row, Form, Button, Tabs, Col, Upload, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import CustomForm from '../../components/CustomForm';
@@ -63,6 +63,7 @@ function Complains() {
   const { userInformation } = me;
   const [form] = Form.useForm();
 
+  const [loading, setLoading] = useState(false);
   const [loadingFile, setLoadingFile] = useState(false);
 
   const [fileList, setFileList] = useState([]);
@@ -70,15 +71,41 @@ function Complains() {
 
   const handleFile = (e) => {
     console.log(e.file.originFileObj);
-    setFileList(e.file.originFileObj);
+    setFileList([e.file.originFileObj]);
   };
 
-  const sendFiles = () => {
-    uploadFileWithFirebase(fileList, setLoadingFile);
-  };
+  const uploadSolicitud = (values) => {
+    const config = {
+			method: 'POST',
+			body: JSON.stringify(values),
+			headers:{
+				'Content-Type': 'application/json',
+			},
+		}
+
+    fetch('http://localhost:8000/api/solicitud', config)
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.ok) {
+          form.resetFields();
+          setFileList([]);
+          message.success('Solicitud enviada');
+				} else {
+					message.error('Ocurrió un error al intentar enviar la solicitud');
+				}
+				setLoading(false);
+			});
+  }
 
   const handleSubmit = (values) => {
-    console.log('Received values of form: ', values);
+    if (fileList.length > 0) {
+      uploadFileWithFirebase(fileList[0], setLoadingFile, (fileUrl) => {
+        values.Imagen = fileUrl;
+        uploadSolicitud(values);
+      });
+    } else {
+      uploadSolicitud(values);
+    }
   };
 
   return (
@@ -110,6 +137,7 @@ function Complains() {
                           onChange={handleFile}
                           listType="text"
                           maxCount={1}
+                          fileList={fileList}
                         >
                           <Button icon={<UploadOutlined />} className="w-100 text-right" />
                         </Upload>
@@ -120,8 +148,7 @@ function Complains() {
                           htmlType="submit"
                           size="large"
                           className="w-100"
-                          onClick={sendFiles}
-                          loading={loadingFile}
+                          loading={loadingFile || loading}
                         >
                           Ingresar
                         </Button>

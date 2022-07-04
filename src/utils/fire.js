@@ -13,14 +13,16 @@ const firebaseConfig = {
 
 const firebaseApp = initializeApp(firebaseConfig);
 
-export const uploadFileWithFirebase = (file, setLoading) => {
-  const storageRef = ref(storage, 'images/' + file.name);
+export const uploadFileWithFirebase = (file, setLoading, callback) => {
+  const refPrefix = new Date().getTime().toString();
+  const storageRef = ref(storage, refPrefix.concat('/', file.name));
   const uploadTask = uploadBytesResumable(storageRef, file);
 
   setLoading(true);
 
   uploadTask.on('state_changed',
   (snapshot) => {
+    /*
     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
     console.log('Upload is ' + progress + '% done');
     switch (snapshot.state) {
@@ -32,6 +34,7 @@ export const uploadFileWithFirebase = (file, setLoading) => {
         break;
       default: ;
     }
+    */
   },
   (error) => {
     setLoading(false);
@@ -54,6 +57,7 @@ export const uploadFileWithFirebase = (file, setLoading) => {
     setLoading(false);
     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
       console.log('File available at', downloadURL);
+      callback(downloadURL);
     });
   }
 );

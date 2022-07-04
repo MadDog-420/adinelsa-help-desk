@@ -283,6 +283,13 @@ const solicitud = {
   
 }
 
+const filterList = (list, value, field) => {
+  if (value !== null && value !== undefined) {
+    return list.filter((item) => item[field] === value);
+  }
+  return list;
+}
+
 function ComplainDetails() {
   const { state } = useContext(AppContext);
   const { me } = state;
@@ -297,6 +304,8 @@ function ComplainDetails() {
   const [loadingTipos, setLoadingTipos] = useState(true);
   const [loadingImpactos, setLoadingImpactos] = useState(true);
   const [loadingPrioridad, setLoadingPrioridad] = useState(true);
+
+  const [categoriaValue, setCategoriaValue] = useState();
  
   const [data, setData] = useState(null);
   const [categorias, setCategorias] = useState([]);
@@ -309,8 +318,16 @@ function ComplainDetails() {
     console.log(values);
   };
 
+  const onChange = (changedValues) => {
+    const formFieldName = Object.keys(changedValues)[0];
+    if (formFieldName === "categoria") {
+      setCategoriaValue(changedValues[formFieldName]);
+      form.setFieldsValue({ clasificacion: undefined });
+    }
+  }
+
   useEffect(() => {
-    if (userInformation.rol !== 'administrador') {
+    if (userInformation.IdRol !== 1) {
       if (data && data.owner !== userInformation.id) {
         navigate('/noAccess', { replace: true });
       }
@@ -338,9 +355,9 @@ function ComplainDetails() {
 
   useEffect(() => {
     getData(loadingTipos, setLoadingTipos, 'http://localhost:8000/api/clasificacion', (data) => {
-      setTipos(transformToOptions(data, 'Clasificacion', 'IdClasificacion'));
+      setTipos(transformToOptions(data, 'Clasificacion', 'IdClasificacion', 'IdTipoSolicitud'));
     })
-  }, [loadingTipos]);
+  }, [categoriaValue, loadingTipos]);
 
   useEffect(() => {
     getData(loadingImpactos, setLoadingImpactos, 'http://localhost:8000/api/impacto', (data) => {
@@ -369,9 +386,12 @@ function ComplainDetails() {
             <CustomForm
               loading={!data || loading || loadingCategoria || loadingEstados || loadingTipos || loadingImpactos || loadingPrioridad}
               form={form}
-              itemList={itemList(categorias, estados, tipos, impactos, prioridad, data)}
+              itemList={
+                itemList(categorias, estados, filterList(tipos, categoriaValue, 'IdTipoSolicitud'), impactos, prioridad, data)
+              }
               requiredMark={false}
               handleSubmit={handleSubmit}
+              onChangedValues={onChange}
             />
           </div>
         </Col>
@@ -384,6 +404,7 @@ function ComplainDetails() {
               itemList={solutionItems()}
               requiredMark={false}
               handleSubmit={handleSubmit}
+              onChangedValues={onChange}
             />
           </div>
         </Col>

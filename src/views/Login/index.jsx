@@ -67,8 +67,8 @@ function Login(props) {
 		fetch('http://localhost:8000/api/login', config)
 			.then((res) => res.json())
 			.then((data) => {
-				if (data.length > 0) {
-          setAuthToken(data[0].IdUsuario);
+				if (data.id) {
+          setAuthToken(data.id);
           dispatch({ type: 'refetch' });
 					setLoginState(true);
 				} else {
