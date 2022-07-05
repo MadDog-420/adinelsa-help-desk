@@ -1,13 +1,24 @@
-import { Col } from 'antd';
+import { Col, Tabs } from 'antd';
+import NotAssignedTable from '../NotAssignedTable';
 import ComplainsTable from './../ComplainsTable/index';
 
-const AllComplains = () => {
+const AllComplains = (props) => {
+  const { idRol } = props;
 
   return (
     <Col span={24}>
-      <div className="p-3 bg-white border-round">
-        <ComplainsTable />
-      </div>
+      <Tabs defaultActiveKey="1" type="card" className="w-100">
+        {
+          idRol === 1 && (
+            <Tabs.TabPane tab="Sin asignar" key="1">
+              <NotAssignedTable />
+            </Tabs.TabPane>
+          )
+        }
+        <Tabs.TabPane tab={idRol === 1 ? 'Asignadas' : 'Todas'} key={idRol === 1 ? 2 : 1}>
+          <ComplainsTable />
+        </Tabs.TabPane>
+      </Tabs>
     </Col>
   )
 }

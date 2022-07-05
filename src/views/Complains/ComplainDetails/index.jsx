@@ -1,287 +1,12 @@
-import { Form, Row, Col, Button } from 'antd';
+import { Form, Row, Col, Button, message } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
 import { useContext, useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AppContext } from './../../../context/index';
-import moment from 'moment';
 import CustomForm from './../../../components/CustomForm/index';
 import { getData, transformToOptions } from '../../../utils/tools';
+import { itemList, solutionItems } from './utils';
 import '../styles.scss';
-
-const itemList = (categorias, estados, tipos, impactos, prioridad, data) => [
-  {
-		label: 'Código',
-		name: 'codigo',
-		size: 'large',
-    value: data && data.codigo,
-		disabled: true,
-		responsive: {
-			xs: 24, sm: 24, lg: 6, 
-		},
-	},
-  {
-		label: 'Realizado por',
-		name: 'owner',
-		size: 'large',
-    value: data && data.owner,
-		disabled: true,
-		responsive: {
-			xs: 24, sm: 24, lg: 18, 
-		},
-	},
-  {
-		component: 'textArea',
-		label: 'Detalle de la solicitud',
-		name: 'detalleSolicitud',
-		size: 'large',
-    value: data && data.detalle,
-    disabled: true,
-		rules: [
-			{
-				required: true,
-        message: 'Campo requerido',
-			},
-		],
-		responsive: {
-			span: 24,
-		},
-	},
-  {
-		component: 'datePicker',
-		label: 'Fecha de registro',
-		name: 'fechaEmision',
-		size: 'large',
-    value: moment(),
-    disabled: true,
-		responsive: {
-			xs: 24, sm: 24, md: 10, lg: 8,
-		},
-	},
-	{
-    component: 'singleSelect',
-		label: 'Categoría',
-		name: 'categoria',
-		size: 'large',
-    value: data && data.categoria,
-    options: categorias,
-    placeholder: 'Selecciona una categoría',
-		rules: [
-			{
-				required: true,
-			},
-		],
-		responsive: {
-			xs: 24, sm: 24, lg: 12, xl: 8,
-		},
-	},
-  {
-    component: 'singleSelect',
-		label: 'Estado',
-		name: 'estado',
-		size: 'large',
-    value: data && data.estado,
-    options: estados,
-    placeholder: 'Selecciona una estado',
-		rules: [
-			{
-				required: true,
-			},
-		],
-		responsive: {
-			xs: 24, sm: 24, lg: 12, xl: 8,
-		},
-	},
-  {
-    component: 'singleSelect',
-		label: 'Clasificación',
-		name: 'clasificacion',
-		size: 'large',
-    value: data && data.clasificacion,
-    options: tipos,
-    placeholder: 'Selecciona un tipo',
-		rules: [
-			{
-				required: true,
-			},
-		],
-		responsive: {
-			xs: 24, sm: 24, lg: 12, xl: 8,
-		},
-	},
-  {
-    component: 'singleSelect',
-		label: 'Impacto',
-		name: 'impacto',
-		size: 'large',
-    value: data && data.impacto,
-    options: impactos,
-    placeholder: 'Selecciona un impacto',
-		rules: [
-			{
-				required: true,
-			},
-		],
-		responsive: {
-			xs: 24, sm: 24, lg: 12, xl: 8,
-		},
-	},
-  {
-    component: 'singleSelect',
-		label: 'Prioridad',
-		name: 'prioridad',
-		size: 'large',
-    value: data && data.prioridad,
-    options: prioridad,
-    placeholder: 'Selecciona una prioridad',
-		rules: [
-			{
-				required: true,
-			},
-		],
-		responsive: {
-			xs: 24, sm: 24, lg: 12, xl: 8,
-		},
-	},
-  {
-    component: 'singleSelect',
-		label: 'Asignado a',
-		name: 'rolAsignado',
-		size: 'large',
-    value: '1',
-    options: [
-      {
-        label: 'Técnico nivel 1',
-        value: '1',
-      }
-    ],
-    placeholder: 'Rol asignado',
-		rules: [
-			{
-				required: true,
-			},
-		],
-		responsive: {
-			xs: 24, sm: 24, lg: 12, xl: 12,
-		},
-	},
-  {
-    component: 'singleSelect',
-		label: 'Responsable',
-		name: 'responsable',
-		size: 'large',
-    value: '2',
-    options: [
-      {
-        label: 'Marco Antonio Farfan',
-        value: '2',
-      }
-    ],
-    placeholder: 'Responsable',
-		rules: [
-			{
-				required: true,
-			},
-		],
-		responsive: {
-			xs: 24, sm: 24, lg: 12, xl: 12,
-		},
-	},
-  {
-    component: 'singleSelect',
-		label: 'SLA',
-		name: 'sla',
-		size: 'large',
-    value: '2',
-    options: [
-      {
-        label: 'SLA 1',
-        value: '1',
-      },
-      {
-        label: 'SLA 2',
-        value: '2',
-      }
-    ],
-    placeholder: 'Rol asignado',
-		rules: [
-			{
-				required: true,
-			},
-		],
-		responsive: {
-			xs: 24, sm: 24, lg: 12, xl: 12,
-		},
-	},
-  {
-		label: 'Tiempo de respuesta',
-		name: 'tiempoRespuesta',
-		size: 'large',
-    value: '1 hora',
-    disabled: true,
-		responsive: {
-			xs: 24, sm: 24, lg: 12, xl: 12,
-		},
-	},
-];
-
-const solutionItems = () => [
-  {
-		label: 'Descripción',
-		name: 'descripcionSolucion',
-		size: 'large',
-		rules: [
-			{
-				required: true,
-        message: 'Campo requerido',
-			},
-		],
-		responsive: {
-			xs: 24, sm: 24, md: 14, lg: 18 
-		},
-	},
-  {
-		component: 'datePicker',
-		label: 'Fecha',
-		name: 'fechaActualizado',
-		size: 'large',
-    value: moment(),
-    disabled: true,
-		rules: [
-			{
-				required: true,
-        message: 'Campo requerido',
-			},
-		],
-		responsive: {
-			xs: 24, sm: 24, md: 10, lg: 6
-		},
-	},
-	{
-		component: 'textArea',
-		label: 'Actividades',
-		name: 'actividadesSolucion',
-		size: 'large',
-		rules: [
-			{
-				required: true,
-        message: 'Campo requerido',
-			},
-		],
-		responsive: {
-			span: 24,
-		},
-	},
-];
-
-const solicitud = {
-  codigo: 'SO-001',
-  owner: '2',
-  detalle: 'Lorem ipsum',
-  fechaEmision: '28-6-2022',
-  fechaActualizacion: null,
-  actividadesSolucion: 'Lorem ipsum',
-  
-}
 
 const filterList = (list, value, field) => {
   if (value !== null && value !== undefined) {
@@ -299,13 +24,18 @@ function ComplainDetails() {
   const params = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [loadingDetalle, setLoadingDetalle] = useState(true);
   const [loadingCategoria, setLoadingCategoria] = useState(true);
   const [loadingEstados, setLoadingEstados] = useState(true);
   const [loadingTipos, setLoadingTipos] = useState(true);
   const [loadingImpactos, setLoadingImpactos] = useState(true);
   const [loadingPrioridad, setLoadingPrioridad] = useState(true);
+  const [loadingRoles, setLoadingRoles] = useState(true);
+  const [loadingUsuarios, setLoadingUsuarios] = useState(true);
+  const [loadingSlas, setLoadingSlas] = useState(true);
 
   const [categoriaValue, setCategoriaValue] = useState();
+  const [rolValue, setRolValue] = useState();
  
   const [data, setData] = useState(null);
   const [categorias, setCategorias] = useState([]);
@@ -313,33 +43,101 @@ function ComplainDetails() {
   const [tipos, setTipos] = useState([]);
   const [impactos, setImpactos] = useState([]);
   const [prioridad, setPrioridad] = useState([]);
+  const [roles, setRoles] = useState([]);
+  const [usuarios, setUsuarios] = useState([]);
+  const [slas, setSlas] = useState([]);
+
+  const uploadDetalleSolicitud = (values) => {
+    const config = {
+			method: 'POST',
+			body: JSON.stringify(values),
+			headers:{
+				'Content-Type': 'application/json',
+			},
+		}
+
+    fetch('http://localhost:8000/api/detalleSolicitud', config)
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.ok) {
+          form.resetFields();
+          message.success('Solicitud enviada');
+				} else {
+					message.error('Ocurrió un error al intentar enviar la solicitud');
+				}
+				setLoading(false);
+			});
+  };
 
   const handleSubmit = (values) => {
     console.log(values);
+    uploadDetalleSolicitud(values);
   };
 
   const onChange = (changedValues) => {
-    const formFieldName = Object.keys(changedValues)[0];
-    if (formFieldName === "categoria") {
-      setCategoriaValue(changedValues[formFieldName]);
-      form.setFieldsValue({ clasificacion: undefined });
-    }
+    const formFields = Object.keys(changedValues);
+    formFields.forEach((item) => {
+      if (item === "categoria") {
+        setCategoriaValue(changedValues[item]);
+        form.setFieldsValue({ clasificacion: undefined });
+      }
+      if (item === "rolAsignado") {
+        setRolValue(changedValues[item]);
+        form.setFieldsValue({ responsable: undefined });
+      }
+      if (item === "sla") {
+        const slaValue = slas.filter((i) => i.value === changedValues[item]);
+        form.setFieldsValue({ tiempoRespuesta: slaValue[0].other });
+      }
+    })
   }
 
   useEffect(() => {
-    if (userInformation.IdRol !== 1) {
+    if (data && userInformation.IdRol !== 1) {
       if (data && data.owner !== userInformation.id) {
         navigate('/noAccess', { replace: true });
       }
     }
-  });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, navigate]);
 
   useEffect(() => {
     if (loading) {
-      setData(solicitud);
-      setLoading(false);
+      fetch('http://localhost:8000/api/solicitud/'+params.id)
+        .then((res) => res.json())
+        .then((solicitud) => {
+          setData({
+            codigo: solicitud.Codigo,
+            owner: solicitud.IdUsuario,
+            detalle: solicitud.DetalleSolicitud,
+            fechaEmision: solicitud.FechaRegistro,
+          });
+          setLoading(false);
+        });
     }
   }, [loading, params]);
+
+  useEffect(() => {
+    if (loadingDetalle && data) {
+      fetch('http://localhost:8000/api/detalleSolicitud/'+data.codigo)
+        .then((res) => res.ok && res.json())
+        .then((detalle) => {
+          const object = {
+            categoria: detalle.IdTipoSolicitud,
+            estado: detalle.IdEstadoSolicitud,
+            clasificacion: detalle.IdClasificacion,
+            impacto: detalle.IdImpacto,
+            prioridad: detalle.IdPrioridad,
+            responsable: detalle.IdUsuario,
+            sla: detalle.IdSLA,
+            fechaActualizado: detalle.FechaSolucion,
+            actividadesSolucion: detalle.DetalleSolucion,
+          }
+          setData({...data, ...object });
+          setLoadingDetalle(false);
+        });
+    }
+  }, [loadingDetalle, data])
 
   useEffect(() => {
     getData(loadingCategoria, setLoadingCategoria, 'http://localhost:8000/api/tipoSolicitud', (data) => {
@@ -371,6 +169,35 @@ function ComplainDetails() {
     })
   }, [loadingPrioridad]);
 
+  useEffect(() => {
+    getData(loadingRoles, setLoadingRoles, 'http://localhost:8000/api/roles', (data) => {
+      setRoles(transformToOptions(data.filter((item) => item.IdRol > 2), 'descripcion', 'IdRol'));
+    })
+  }, [loadingRoles]);
+
+  useEffect(() => {
+    if (!loadingRoles) {
+      getData(loadingUsuarios, setLoadingUsuarios, 'http://localhost:8000/api/usuario', (data) => {
+        const list = [];
+        data.filter((item) => item.IdRol > 2).forEach((item) => {
+          list.push({
+            label: item.nombre.concat(' ', item.ape_paterno, ' ', item.ape_materno),
+            value: item.IdUsuario,
+            IdRol: item.IdRol,
+          })
+        });
+        setUsuarios(list);
+      });
+    }
+    
+  }, [loadingRoles, loadingUsuarios]);
+
+  useEffect(() => {
+    getData(loadingSlas, setLoadingSlas, 'http://localhost:8000/api/sla', (data) => {
+      setSlas(transformToOptions(data, 'SLA', 'IdSLA', 'TiempoRespuesta'));
+    })
+  }, [loadingSlas]);
+
   return (
     <div className="complains-container">
       <Row className="mb-3">
@@ -384,10 +211,20 @@ function ComplainDetails() {
           <div className="p-3 bg-white border-round">
             <div className="text-bold mb-2 font-large">Detalles</div>
             <CustomForm
-              loading={!data || loading || loadingCategoria || loadingEstados || loadingTipos || loadingImpactos || loadingPrioridad}
+              loading={!data || loading || loadingCategoria || loadingEstados || loadingTipos || loadingImpactos || loadingPrioridad || loadingRoles || loadingUsuarios}
               form={form}
               itemList={
-                itemList(categorias, estados, filterList(tipos, categoriaValue, 'IdTipoSolicitud'), impactos, prioridad, data)
+                itemList(
+                  categorias,
+                  estados,
+                  filterList(tipos, categoriaValue, 'IdTipoSolicitud'),
+                  impactos,
+                  prioridad,
+                  roles,
+                  filterList(usuarios, rolValue, 'IdRol'),
+                  slas,
+                  data
+                )
               }
               requiredMark={false}
               handleSubmit={handleSubmit}
@@ -399,9 +236,9 @@ function ComplainDetails() {
           <div className="p-3 bg-white border-round">
             <div className="text-bold mb-2 font-large">Solución</div>
             <CustomForm
-              loading={!data || loading || loadingCategoria || loadingEstados || loadingTipos || loadingImpactos || loadingPrioridad}
+              loading={!data || loading || loadingCategoria || loadingEstados || loadingTipos || loadingImpactos || loadingPrioridad || loadingRoles || loadingUsuarios}
               form={form}
-              itemList={solutionItems()}
+              itemList={solutionItems(data)}
               requiredMark={false}
               handleSubmit={handleSubmit}
               onChangedValues={onChange}
@@ -411,7 +248,14 @@ function ComplainDetails() {
         <Col span={24}>
           <Row justify="end">
             <Col flex="200px">
-              <Button type="primary" htmlType="submit" size="large" className="w-100" onClick={form.submit}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                size="large"
+                className="w-100"
+                onClick={form.submit}
+                loading={!data || loading || loadingCategoria || loadingEstados || loadingTipos || loadingImpactos || loadingPrioridad || loadingRoles || loadingUsuarios}
+              >
                 Guardar
               </Button>
             </Col>

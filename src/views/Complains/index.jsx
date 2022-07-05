@@ -115,8 +115,8 @@ function Complains() {
       </Row>
       <Row gutter={[16, 16]}>
         {
-          userInformation.IdRol === 1 && (
-            <AllComplains />
+          userInformation.IdRol < 3 && (
+            <AllComplains idRol={userInformation.IdRol} key="allComplains" />
           )
         }
         {

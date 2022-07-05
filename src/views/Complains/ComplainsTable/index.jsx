@@ -1,4 +1,5 @@
 import { Table, Tag } from 'antd';
+import { useState, useEffect } from 'react';
 import 'moment/locale/es';
 import moment from 'moment';
 import { Button } from 'antd';
@@ -71,40 +72,35 @@ const columns = (navigate) => [
     },
 ];
 
-const solicitud = [{
-  codigo: 'SO-001',
-  owner: 2,
-  ownerName: 'Frank Castle',
-  detalle: 'Lorem ipsum',
-  fechaEmision: '2016-01-01',
-  tipo: 'Software',
-  estado: 'Asignado',
-  fechaActualizacion: null,
-  actividadesSolucion: 'Lorem ipsum',
-}];
-
-const dataSource = (data) => {
-  const formattedData = [];
-  data.forEach((item, index) => {
-    formattedData.push(
-      {
-        key: index,
-        codigo: item.codigo,
-        owner: item.ownerName,
-        detalle: item.detalle,
-        fecha: moment(item.fechaEmision).format('DD/MM/yyyy'),
-        tipo: item.tipo,
-        estado: item.estado,
-      }
-    )
-  });
-  return formattedData;
-};
-
 const ComplainsTable = () => {
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(true);
+  const [dataSource, setDataSource] = useState(null);
+
+  useEffect(() => {
+    fetch('http://localhost:8000/api/detalleSolicitud')
+      .then((res) => res.json())
+      .then((data) => {
+        const formatted = [];
+        data.forEach((item) => {
+          const object = item;
+          item.key = item.Codigo;
+          item.codigo = item.Codigo;
+          item.owner = item.nombre;
+          item.detalle = item.DetalleSolicitud;
+          item.fecha = item.FechaRegistro;
+          item.tipo = item.Tipo;
+          item.estado = item.Estado;
+          formatted.push(object);
+        });
+        setDataSource(formatted);
+        setLoading(false);
+      });
+  }, [loading]);
+
   return (
-    <Table columns={columns(navigate)} dataSource={dataSource(solicitud)} pagination={false} />
+    <Table columns={columns(navigate)} dataSource={dataSource} loading={loading} pagination={false} />
   )
 }
 

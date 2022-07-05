@@ -4,7 +4,7 @@ import {
   Image,
   Skeleton,
 } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { BellOutlined } from '@ant-design/icons';
 import { useEffect, useState, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { menuItems, footerItems } from './constants';
@@ -64,7 +64,7 @@ const Sidebar = (props) => {
           <Image src={Logo} width={120} preview={false} />
         </div>
         <div className="profile pr-2">
-          <UserOutlined />
+          <BellOutlined />
         </div>
       </div>
       {
