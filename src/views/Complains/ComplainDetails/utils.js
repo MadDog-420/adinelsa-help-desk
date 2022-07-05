@@ -202,7 +202,7 @@ export const solutionItems = (data) => [
 		label: 'Fecha',
 		name: 'fechaActualizado',
 		size: 'large',
-    value: moment(data && data.fechaActualizado),
+    value: data && data.fechaActualizado !== null ? moment(data.fechaActualizado) : moment(),
     disabled: true,
 		rules: [
 			{

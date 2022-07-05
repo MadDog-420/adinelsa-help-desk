@@ -23,6 +23,9 @@ function ComplainDetails() {
   const [form] = Form.useForm();
   const params = useParams();
   const navigate = useNavigate();
+
+  const [loadingUpload, setLoadingUpload] = useState(false);
+
   const [loading, setLoading] = useState(true);
   const [loadingDetalle, setLoadingDetalle] = useState(true);
   const [loadingCategoria, setLoadingCategoria] = useState(true);
@@ -38,6 +41,7 @@ function ComplainDetails() {
   const [rolValue, setRolValue] = useState();
  
   const [data, setData] = useState(null);
+  const [detalle, setDetalle] = useState(null);
   const [categorias, setCategorias] = useState([]);
   const [estados, setEstados] = useState([]);
   const [tipos, setTipos] = useState([]);
@@ -48,6 +52,7 @@ function ComplainDetails() {
   const [slas, setSlas] = useState([]);
 
   const uploadDetalleSolicitud = (values) => {
+    setLoadingUpload(true);
     const config = {
 			method: 'POST',
 			body: JSON.stringify(values),
@@ -61,17 +66,20 @@ function ComplainDetails() {
 			.then((data) => {
 				if (data.ok) {
           form.resetFields();
-          message.success('Solicitud enviada');
+          message.success('Solicitud actualizada');
 				} else {
-					message.error('Ocurrió un error al intentar enviar la solicitud');
+					message.error('Ocurrió un error al intentar actualizar la solicitud');
 				}
-				setLoading(false);
-			});
+				setLoadingUpload(false);
+			})
+      .catch(() => setLoadingUpload(false));
   };
 
   const handleSubmit = (values) => {
-    console.log(values);
-    uploadDetalleSolicitud(values);
+    console.log({...values, id: data.id});
+    if (!detalle) {
+      uploadDetalleSolicitud({...values, idSolicitud: data.id});
+    }
   };
 
   const onChange = (changedValues) => {
@@ -107,6 +115,7 @@ function ComplainDetails() {
         .then((res) => res.json())
         .then((solicitud) => {
           setData({
+            id: solicitud.IdSolicitud,
             codigo: solicitud.Codigo,
             owner: solicitud.IdUsuario,
             detalle: solicitud.DetalleSolicitud,
@@ -122,6 +131,9 @@ function ComplainDetails() {
       fetch('http://localhost:8000/api/detalleSolicitud/'+data.codigo)
         .then((res) => res.ok && res.json())
         .then((detalle) => {
+          if (Object.keys(detalle).length !== 0) {
+            setDetalle(true);
+          }
           const object = {
             categoria: detalle.IdTipoSolicitud,
             estado: detalle.IdEstadoSolicitud,
@@ -232,19 +244,23 @@ function ComplainDetails() {
             />
           </div>
         </Col>
-        <Col span={24}>
-          <div className="p-3 bg-white border-round">
-            <div className="text-bold mb-2 font-large">Solución</div>
-            <CustomForm
-              loading={!data || loading || loadingCategoria || loadingEstados || loadingTipos || loadingImpactos || loadingPrioridad || loadingRoles || loadingUsuarios}
-              form={form}
-              itemList={solutionItems(data)}
-              requiredMark={false}
-              handleSubmit={handleSubmit}
-              onChangedValues={onChange}
-            />
-          </div>
-        </Col>
+        {
+          detalle && (
+            <Col span={24}>
+              <div className="p-3 bg-white border-round">
+                <div className="text-bold mb-2 font-large">Solución</div>
+                <CustomForm
+                  loading={!data || loading || loadingCategoria || loadingEstados || loadingTipos || loadingImpactos || loadingPrioridad || loadingRoles || loadingUsuarios}
+                  form={form}
+                  itemList={solutionItems(data)}
+                  requiredMark={false}
+                  handleSubmit={handleSubmit}
+                  onChangedValues={onChange}
+                />
+              </div>
+            </Col>
+          )
+        }
         <Col span={24}>
           <Row justify="end">
             <Col flex="200px">
@@ -254,7 +270,7 @@ function ComplainDetails() {
                 size="large"
                 className="w-100"
                 onClick={form.submit}
-                loading={!data || loading || loadingCategoria || loadingEstados || loadingTipos || loadingImpactos || loadingPrioridad || loadingRoles || loadingUsuarios}
+                loading={!data || loading || loadingCategoria || loadingEstados || loadingTipos || loadingImpactos || loadingPrioridad || loadingRoles || loadingUsuarios || loadingUpload}
               >
                 Guardar
               </Button>
