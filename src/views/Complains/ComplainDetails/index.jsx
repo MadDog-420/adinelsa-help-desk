@@ -1,5 +1,5 @@
 import { Form, Row, Col, Button, message } from 'antd';
-import { LeftOutlined } from '@ant-design/icons';
+import { LeftOutlined, PaperClipOutlined } from '@ant-design/icons';
 import { useContext, useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AppContext } from './../../../context/index';
@@ -100,9 +100,9 @@ function ComplainDetails() {
   const handleSubmit = (values) => {
     console.log({...values, id: data.id, idDetalleSolicitud: data.idDetalleSolicitud});
     if (!detalle) {
-      uploadDetalleSolicitud({...values, idSolicitud: data.id});
+      uploadDetalleSolicitud({...values, idSolicitud: data.id, codigoSolicitud: data.codigo, ownerId: data.ownerId});
     } else {
-      updateDetalleSolicitud({...values, idDetalleSolicitud: data.idDetalleSolicitud});
+      updateDetalleSolicitud({...values, idDetalleSolicitud: data.idDetalleSolicitud, codigoSolicitud: data.codigo, ownerId: data.ownerId});
     }
   };
 
@@ -125,7 +125,7 @@ function ComplainDetails() {
   }
 
   useEffect(() => {
-    if (data && userInformation.IdRol !== 1) {
+    if (data && userInformation.IdRol < 2) {
       if (data && data.owner !== userInformation.id) {
         navigate('/noAccess', { replace: true });
       }
@@ -144,6 +144,7 @@ function ComplainDetails() {
             ownerId: solicitud.IdUsuario,
             detalle: solicitud.DetalleSolicitud,
             fechaEmision: solicitud.FechaRegistro,
+            url: solicitud.Imagen,
           });
           setLoading(false);
         });
@@ -157,20 +158,20 @@ function ComplainDetails() {
         .then((detalle) => {
           if (Object.keys(detalle).length !== 0) {
             setDetalle(true);
+            const object = {
+              idDetalleSolicitud: detalle.IdDetalleSolicitud,
+              categoria: detalle.IdTipoSolicitud,
+              estado: detalle.IdEstadoSolicitud,
+              clasificacion: detalle.IdClasificacion,
+              impacto: detalle.IdImpacto,
+              prioridad: detalle.IdPrioridad,
+              responsable: detalle.IdUsuario[1],
+              sla: detalle.IdSLA,
+              fechaActualizado: detalle.FechaSolucion,
+              actividadesSolucion: detalle.DetalleSolucion,
+            }
+            setData({...data, ...object });
           }
-          const object = {
-            idDetalleSolicitud: detalle.IdDetalleSolicitud,
-            categoria: detalle.IdTipoSolicitud,
-            estado: detalle.IdEstadoSolicitud,
-            clasificacion: detalle.IdClasificacion,
-            impacto: detalle.IdImpacto,
-            prioridad: detalle.IdPrioridad,
-            responsable: detalle.IdUsuario[1],
-            sla: detalle.IdSLA,
-            fechaActualizado: detalle.FechaSolucion,
-            actividadesSolucion: detalle.DetalleSolucion,
-          }
-          setData({...data, ...object });
           setLoadingDetalle(false);
         });
     }
@@ -238,6 +239,8 @@ function ComplainDetails() {
     })
   }, [loadingSlas]);
 
+  console.log(data);
+
   return (
     <div className="complains-container">
       <Row className="mb-3">
@@ -250,6 +253,13 @@ function ComplainDetails() {
         <Col span={24}>
           <div className="p-3 bg-white border-round">
             <div className="text-bold mb-2 font-large">Detalles</div>
+            {
+              data && data.url && (
+                <div className="w-100">
+                  <Button type="link" href={data.url} target="blank" icon={<PaperClipOutlined />}>Archivo adjunto</Button>
+                </div>
+              )
+            }
             <CustomForm
               loading={!data || loading || loadingCategoria || loadingEstados || loadingTipos || loadingImpactos || loadingPrioridad || loadingRoles || loadingUsuarios}
               form={form}

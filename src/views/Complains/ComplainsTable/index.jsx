@@ -42,6 +42,9 @@ const columns = (navigate) => [
       title: 'Fecha de registro',
       dataIndex: 'fecha',
       key: 'fecha',
+      render: (text) => (
+        <div>{moment(text).format('DD-MM-YYYY')}</div>
+      ),
     },
     {
       title: 'Tipo de solicitud',

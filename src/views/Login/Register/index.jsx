@@ -1,14 +1,17 @@
-import { Row, Col, Form, Image, Button } from 'antd';
+import { Row, Col, Form, Image, Button, message } from 'antd';
 import RegisterImage from '../../../media/images/registration_no_bg.png';
 import  Logo from '../../../media/adinelsa-logo.png';
 import '../styles.scss';
 import { useNavigate } from 'react-router-dom';
 import routesDictionary from './../../../routes/routesDict';
 import CustomForm from '../../../components/CustomForm';
+import { useState, useContext } from 'react';
+import { setAuthToken } from '../../../utils/tools';
+import { AppContext } from './../../../context/index';
 
 const itemList = [
   {
-		name: 'name',
+		name: 'nombre',
 		size: 'large',
 		rules: [
 			{
@@ -22,7 +25,7 @@ const itemList = [
 		},
 	},
 	{
-		name: 'surnamePaterno',
+		name: 'ape_paterno',
 		size: 'large',
 		placeholder: 'Apellido paterno',
 		rules: [
@@ -36,7 +39,7 @@ const itemList = [
 		},
 	},
   {
-		name: 'surnameMaterno',
+		name: 'ape_materno',
 		size: 'large',
 		placeholder: 'Apellido materno',
 		rules: [
@@ -50,22 +53,36 @@ const itemList = [
 		},
 	},
   {
-    component: 'singleSelect',
-		name: 'tipoDocumento',
+		name: 'telefono',
 		size: 'large',
-    value: 'dni',
+		rules: [
+			{
+				required: true,
+        message: 'Campo requerido',
+			},
+		],
+		placeholder: 'Número de teléfono',
+		responsive: {
+			span: 24,
+		},
+	},
+  {
+    component: 'singleSelect',
+		name: 'IdDocumento',
+		size: 'large',
+    value: 1,
     options: [
       {
         label: 'DNI',
-        value: 'dni',
+        value: 1,
       },
       {
         label: 'RUC',
-        value: 'ruc',
+        value: 2,
       },
       {
         label: 'CARNET DE EXTRANJERÍA',
-        value: 'carnetExtranjeria',
+        value: 3,
       }
     ],
 		rules: [
@@ -79,7 +96,7 @@ const itemList = [
 		},
 	},
   {
-		name: 'numeroDocumento',
+		name: 'num_documento',
 		size: 'large',
     placeholder: 'Documento',
 		rules: [
@@ -93,7 +110,7 @@ const itemList = [
 		},
 	},
   {
-		name: 'email',
+		name: 'correo_electronico',
 		size: 'large',
 		rules: [
 			{
@@ -108,7 +125,7 @@ const itemList = [
 	},
   {
     component: 'password',
-		name: 'password',
+		name: 'contrasenia',
 		size: 'large',
     placeholder: 'Contraseña',
     hasFeedback: true,
@@ -136,7 +153,7 @@ const itemList = [
 			},
       ({ getFieldValue }) => ({
         validator(_, value) {
-          if (!value || getFieldValue('password') === value) {
+          if (!value || getFieldValue('contrasenia') === value) {
             return Promise.resolve();
           }
 
@@ -150,15 +167,73 @@ const itemList = [
 	},
 ];
 
-function Register() {
+function Register(props) {
+  const { setLoginState } = props;
+  const { dispatch } = useContext(AppContext);
   const [form] = Form.useForm();
   const navigate = useNavigate();
+
+  const [loadingUpload, setLoadingUpload] = useState(false);
+
   const goToLogin = () => {
     navigate(routesDictionary.login.router);
   }
-  const handleSubmit = (values) => {
-    console.log('Received values of form: ', values);
+
+  const loginUser = (values) => {
+    setLoadingUpload(true);
+    const config = {
+			method: 'POST',
+			body: JSON.stringify(values),
+			headers:{
+				'Content-Type': 'application/json',
+			},
+		}
+
+    fetch('http://localhost:8000/api/login', config)
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.id) {
+          message.success('Ingresando...');
+          setAuthToken(data.id);
+          dispatch({ type: 'refetch' });
+					setLoginState(true);
+				}
+				setLoadingUpload(false);
+			})
+      .catch(() => setLoadingUpload(false));
   };
+
+  const registerUser = (values) => {
+    setLoadingUpload(true);
+    const config = {
+			method: 'POST',
+			body: JSON.stringify(values),
+			headers:{
+				'Content-Type': 'application/json',
+			},
+		}
+
+    fetch('http://localhost:8000/api/usuario', config)
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.email) {
+          message.success('Registro exitoso');
+          loginUser({
+            email: data.email,
+            password: values.contrasenia,
+          });
+				} else {
+					message.error('Error en el registro');
+				}
+				setLoadingUpload(false);
+			})
+      .catch(() => setLoadingUpload(false));
+  };
+
+  const handleSubmit = (values) => {
+    registerUser(values);
+  };
+
   return (
     <div className="login-container">
       <Row justify="center">
@@ -175,7 +250,7 @@ function Register() {
               handleSubmit={handleSubmit}
               submitButton={(
                 <Row className="w-100 mt-4 mb-2" justify="center">
-                  <Button type="primary" htmlType="submit" size="large">
+                  <Button type="primary" htmlType="submit" size="large" loading={loadingUpload} >
                     Registrarse
                   </Button>
                 </Row>

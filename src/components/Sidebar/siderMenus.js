@@ -7,24 +7,6 @@ import {
 import routesDictionary from '../../routes/routesDict';
 
 export const defaultMenus = (rol) => {
-  if (rol === '1') {
-    return [
-      {
-        title: routesDictionary.dashboard.title,
-        key: routesDictionary.dashboard.router,
-        redirection: routesDictionary.dashboard.router,
-        name: routesDictionary.dashboard.moduleName,
-        icon: <DashboardOutlined />,
-      },
-      {
-        title: routesDictionary.claims.title,
-        key: routesDictionary.claims.router,
-        redirection: routesDictionary.claims.router,
-        name: routesDictionary.claims.moduleName,
-        icon: <ExceptionOutlined />,
-      }
-    ];
-  }
   if (rol === '2') {
     return [
       {
@@ -43,7 +25,25 @@ export const defaultMenus = (rol) => {
       }
     ];
   }
-  if (rol === '3') {
+  if (rol === '3' || rol === '4') {
+    return [
+      {
+        title: routesDictionary.dashboard.title,
+        key: routesDictionary.dashboard.router,
+        redirection: routesDictionary.dashboard.router,
+        name: routesDictionary.dashboard.moduleName,
+        icon: <DashboardOutlined />,
+      },
+      {
+        title: routesDictionary.claims.title,
+        key: routesDictionary.claims.router,
+        redirection: routesDictionary.claims.router,
+        name: routesDictionary.claims.moduleName,
+        icon: <ExceptionOutlined />,
+      }
+    ];
+  }
+  if (rol === '1') {
     return [
       {
         title: routesDictionary.claims.title,

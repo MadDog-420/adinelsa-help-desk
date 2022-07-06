@@ -15,7 +15,7 @@ export const homePage = (rol) => {
     path: '/',
   };
 
-  if (rol === '1') {
+  if (rol === '2') {
     component = Dashboard;
     title = routesDictionary.dashboard.title;
     name = routesDictionary.dashboard.moduleName;
@@ -33,7 +33,7 @@ export const homePage = (rol) => {
 };
 
 const moduleException = (rol) => {
-  if (rol !== '1') {
+  if (rol !== '2') {
     return [routesDictionary.dashboard.moduleName];
   }
   return [];

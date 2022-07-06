@@ -8,11 +8,12 @@ import AllComplains from './AllComplains';
 import ComplainsTable from './ComplainsTable/index';
 import { uploadFileWithFirebase } from './../../utils/fire';
 import './styles.scss';
+import NotAssignedTable from './NotAssignedTable/index';
 
 const itemList = () => [
 	{
 		label: 'Solicitud',
-		name: 'solicitud',
+		name: 'Solicitud',
 		size: 'large',
 		rules: [
 			{
@@ -43,7 +44,7 @@ const itemList = () => [
 	{
 		component: 'textArea',
 		label: 'Detalle de la solicitud',
-		name: 'detalleSolicitud',
+		name: 'DetalleSolicitud',
 		size: 'large',
 		rules: [
 			{
@@ -65,6 +66,7 @@ function Complains() {
 
   const [loading, setLoading] = useState(false);
   const [loadingFile, setLoadingFile] = useState(false);
+  const [refetch, setRefetch] = useState(false);
 
   const [fileList, setFileList] = useState([]);
   // const [urls, setUrls] = useState([]);
@@ -94,6 +96,7 @@ function Complains() {
 					message.error('Ocurrió un error al intentar enviar la solicitud');
 				}
 				setLoading(false);
+        setRefetch(true);
 			});
   }
 
@@ -101,7 +104,7 @@ function Complains() {
     if (fileList.length > 0) {
       uploadFileWithFirebase(fileList[0], setLoadingFile, (fileUrl) => {
         values.Imagen = fileUrl;
-        uploadSolicitud(values);
+        uploadSolicitud({...values, IdUsuario: userInformation.IdUsuario});
       });
     } else {
       uploadSolicitud(values);
@@ -115,12 +118,12 @@ function Complains() {
       </Row>
       <Row gutter={[16, 16]}>
         {
-          userInformation.IdRol < 3 && (
+          userInformation.IdRol === 2 && (
             <AllComplains idRol={userInformation.IdRol} key="allComplains" />
           )
         }
         {
-          userInformation.IdRol === 3 && (
+          userInformation.IdRol === 1 && (
             <Tabs defaultActiveKey="1" type="card" className="w-100">
               <Tabs.TabPane tab="Nueva solicitud" key="1">
                 <CustomForm
@@ -158,7 +161,7 @@ function Complains() {
                 />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Mis solicitudes" key="2">
-                <ComplainsTable />
+                <NotAssignedTable idUser={userInformation.IdUsuario} refetch={refetch} setRefetch={setRefetch} />
               </Tabs.TabPane>
             </Tabs>
           )

@@ -9,13 +9,13 @@ const AllComplains = (props) => {
     <Col span={24}>
       <Tabs defaultActiveKey="1" type="card" className="w-100">
         {
-          idRol === 1 && (
+          idRol === 2 && (
             <Tabs.TabPane tab="Sin asignar" key="1">
               <NotAssignedTable />
             </Tabs.TabPane>
           )
         }
-        <Tabs.TabPane tab={idRol === 1 ? 'Asignadas' : 'Todas'} key={idRol === 1 ? 2 : 1}>
+        <Tabs.TabPane tab={idRol === 2 ? 'Asignadas' : 'Todas'} key={idRol === 2 ? 2 : 1}>
           <ComplainsTable />
         </Tabs.TabPane>
       </Tabs>
