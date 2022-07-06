@@ -5,7 +5,6 @@ import CustomForm from '../../components/CustomForm';
 import { useContext, useState } from 'react';
 import { AppContext } from './../../context/index';
 import AllComplains from './AllComplains';
-import ComplainsTable from './ComplainsTable/index';
 import { uploadFileWithFirebase } from './../../utils/fire';
 import './styles.scss';
 import NotAssignedTable from './NotAssignedTable/index';
