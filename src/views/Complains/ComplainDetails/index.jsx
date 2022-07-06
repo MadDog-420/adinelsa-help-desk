@@ -64,8 +64,30 @@ function ComplainDetails() {
     fetch('http://localhost:8000/api/detalleSolicitud', config)
 			.then((res) => res.json())
 			.then((data) => {
-				if (data.ok) {
-          form.resetFields();
+				if (data.id) {
+          message.success('Solicitud agregada');
+				} else {
+					message.error('Ocurrió un error al intentar agregar la solicitud');
+				}
+				setLoadingUpload(false);
+			})
+      .catch(() => setLoadingUpload(false));
+  };
+
+  const updateDetalleSolicitud = (values) => {
+    setLoadingUpload(true);
+    const config = {
+			method: 'PUT',
+			body: JSON.stringify(values),
+			headers:{
+				'Content-Type': 'application/json',
+			},
+		}
+
+    fetch('http://localhost:8000/api/detalleSolicitud/'+data.idDetalleSolicitud, config)
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.id) {
           message.success('Solicitud actualizada');
 				} else {
 					message.error('Ocurrió un error al intentar actualizar la solicitud');
@@ -76,9 +98,11 @@ function ComplainDetails() {
   };
 
   const handleSubmit = (values) => {
-    console.log({...values, id: data.id});
+    console.log({...values, id: data.id, idDetalleSolicitud: data.idDetalleSolicitud});
     if (!detalle) {
       uploadDetalleSolicitud({...values, idSolicitud: data.id});
+    } else {
+      updateDetalleSolicitud({...values, idDetalleSolicitud: data.idDetalleSolicitud});
     }
   };
 
@@ -117,7 +141,7 @@ function ComplainDetails() {
           setData({
             id: solicitud.IdSolicitud,
             codigo: solicitud.Codigo,
-            owner: solicitud.IdUsuario,
+            ownerId: solicitud.IdUsuario,
             detalle: solicitud.DetalleSolicitud,
             fechaEmision: solicitud.FechaRegistro,
           });
@@ -135,12 +159,13 @@ function ComplainDetails() {
             setDetalle(true);
           }
           const object = {
+            idDetalleSolicitud: detalle.IdDetalleSolicitud,
             categoria: detalle.IdTipoSolicitud,
             estado: detalle.IdEstadoSolicitud,
             clasificacion: detalle.IdClasificacion,
             impacto: detalle.IdImpacto,
             prioridad: detalle.IdPrioridad,
-            responsable: detalle.IdUsuario,
+            responsable: detalle.IdUsuario[1],
             sla: detalle.IdSLA,
             fechaActualizado: detalle.FechaSolucion,
             actividadesSolucion: detalle.DetalleSolucion,
@@ -188,21 +213,24 @@ function ComplainDetails() {
   }, [loadingRoles]);
 
   useEffect(() => {
-    if (!loadingRoles) {
-      getData(loadingUsuarios, setLoadingUsuarios, 'http://localhost:8000/api/usuario', (data) => {
+    if (!loadingRoles && !loadingDetalle) {
+      getData(loadingUsuarios, setLoadingUsuarios, 'http://localhost:8000/api/usuario', (res) => {
+
+        const user = res.filter((item) => item.IdUsuario === data.ownerId)[0];
+        setData({...data, owner: user.nombre.concat(' ', user.ape_paterno, ' ', user.ape_materno), rolAsignado: user.IdRol});
+
         const list = [];
-        data.filter((item) => item.IdRol > 2).forEach((item) => {
+        res.filter((item) => item.IdRol > 2).forEach((item) => {
           list.push({
             label: item.nombre.concat(' ', item.ape_paterno, ' ', item.ape_materno),
             value: item.IdUsuario,
             IdRol: item.IdRol,
-          })
+          });
         });
         setUsuarios(list);
       });
     }
-    
-  }, [loadingRoles, loadingUsuarios]);
+  }, [data, loadingDetalle, loadingRoles, loadingUsuarios]);
 
   useEffect(() => {
     getData(loadingSlas, setLoadingSlas, 'http://localhost:8000/api/sla', (data) => {

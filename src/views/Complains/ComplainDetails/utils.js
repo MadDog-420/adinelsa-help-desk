@@ -139,6 +139,7 @@ export const itemList = (categorias, estados, tipos, impactos, prioridad, roles,
 		label: 'Asignado a',
 		name: 'rolAsignado',
 		size: 'large',
+    value: data && data.rolAsignado,
     options: roles,
     placeholder: 'Rol asignado',
 		rules: [
@@ -220,12 +221,6 @@ export const solutionItems = (data) => [
 		name: 'actividadesSolucion',
 		size: 'large',
     value: data && data.actividadesSolucion,
-		rules: [
-			{
-				required: true,
-        message: 'Campo requerido',
-			},
-		],
 		responsive: {
 			span: 24,
 		},
