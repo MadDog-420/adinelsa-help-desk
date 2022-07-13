@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { columns } from './../utils';
 
-const NotAssignedTable = (props) => {
+const MyComplainsTable = (props) => {
   const { idUser = null, refetch = null, setRefetch = () => {}} = props;
   const navigate = useNavigate();
 
@@ -22,26 +22,16 @@ const NotAssignedTable = (props) => {
       .then((res) => res.json())
       .then((data) => {
         const formatted = [];
-        fetch('http://localhost:8000/api/detalleSolicitud')
-          .then((res2) => res2.json())
-          .then((data2) => {
-            data.forEach((item) => {
-              let bool = true;
-              for(let i = 0; i < data2.length; i++) {
-                if (item.Codigo === data2[i].Codigo) {
-                  bool = false;
-                }
-              }
-              if (bool) {
-                const object = item;
-                item.key = item.IdSolicitud;
-                formatted.push(object);
-              }
-            });
-            setDataSource(formatted);
-            setLoading(false);
-            setRefetch(false);
-          });
+        data.forEach((item) => {
+          if (idUser && idUser === item.IdUsuario) {
+            const object = item;
+            item.key = item.IdSolicitud;
+            formatted.push(object);
+          }
+        });
+        setDataSource(formatted);
+        setLoading(false);
+        setRefetch(false);
       });
     }
   }, [idUser, loading, setRefetch]);
@@ -51,4 +41,4 @@ const NotAssignedTable = (props) => {
   )
 }
 
-export default NotAssignedTable;
+export default MyComplainsTable;

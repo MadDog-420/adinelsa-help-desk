@@ -154,7 +154,7 @@ function ComplainDetails() {
   useEffect(() => {
     if (loadingDetalle && data) {
       fetch('http://localhost:8000/api/detalleSolicitud/'+data.codigo)
-        .then((res) => res.ok && res.json())
+        .then((res) => res.json())
         .then((detalle) => {
           if (Object.keys(detalle).length !== 0) {
             setDetalle(true);
@@ -218,7 +218,11 @@ function ComplainDetails() {
       getData(loadingUsuarios, setLoadingUsuarios, 'http://localhost:8000/api/usuario', (res) => {
 
         const user = res.filter((item) => item.IdUsuario === data.ownerId)[0];
-        setData({...data, owner: user.nombre.concat(' ', user.ape_paterno, ' ', user.ape_materno), rolAsignado: user.IdRol});
+        let responsable = undefined;
+        if (detalle) {
+          responsable = res.filter((item) => item.IdUsuario === data.responsable)[0];
+        }
+        setData({...data, owner: user.nombre.concat(' ', user.ape_paterno, ' ', user.ape_materno), rolAsignado: responsable && responsable.IdRol});
 
         const list = [];
         res.filter((item) => item.IdRol > 2).forEach((item) => {
@@ -231,16 +235,14 @@ function ComplainDetails() {
         setUsuarios(list);
       });
     }
-  }, [data, loadingDetalle, loadingRoles, loadingUsuarios]);
+  }, [data, detalle, loadingDetalle, loadingRoles, loadingUsuarios]);
 
   useEffect(() => {
     getData(loadingSlas, setLoadingSlas, 'http://localhost:8000/api/sla', (data) => {
       setSlas(transformToOptions(data, 'SLA', 'IdSLA', 'TiempoRespuesta'));
     })
   }, [loadingSlas]);
-
-  console.log(data);
-
+  
   return (
     <div className="complains-container">
       <Row className="mb-3">
@@ -271,7 +273,7 @@ function ComplainDetails() {
                   impactos,
                   prioridad,
                   roles,
-                  filterList(usuarios, rolValue, 'IdRol'),
+                  filterList(usuarios, rolValue, 'value'),
                   slas,
                   data
                 )
@@ -283,7 +285,7 @@ function ComplainDetails() {
           </div>
         </Col>
         {
-          detalle && (
+          detalle && userInformation.IdRol > 2 && (
             <Col span={24}>
               <div className="p-3 bg-white border-round">
                 <div className="text-bold mb-2 font-large">Solución</div>

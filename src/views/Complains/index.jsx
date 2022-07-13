@@ -2,12 +2,12 @@ import { Row, Form, Button, Tabs, Col, Upload, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import CustomForm from '../../components/CustomForm';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { AppContext } from './../../context/index';
 import AllComplains from './AllComplains';
 import { uploadFileWithFirebase } from './../../utils/fire';
 import './styles.scss';
-import NotAssignedTable from './NotAssignedTable/index';
+import MyComplainsTable from './MyComplainsTable/index';
 
 const itemList = () => [
 	{
@@ -67,12 +67,19 @@ function Complains() {
   const [loadingFile, setLoadingFile] = useState(false);
   const [refetch, setRefetch] = useState(false);
 
-  const [fileList, setFileList] = useState([]);
-  // const [urls, setUrls] = useState([]);
+  const [fileList, setFileList] = useState();
+  const [filesToUpload, setFilesToUpload] = useState([]);
 
   const handleFile = (e) => {
-    console.log(e.file.originFileObj);
-    setFileList([e.file.originFileObj]);
+    setFilesToUpload([e.file.originFileObj])
+    setFileList(e.fileList)
+  };
+
+  const customRequest = (options) => {
+    const { onSuccess, file } = options;
+    setTimeout(() => {
+      onSuccess(file);
+    }, 100);
   };
 
   const uploadSolicitud = (values) => {
@@ -99,16 +106,22 @@ function Complains() {
 			});
   }
 
-  const handleSubmit = (values) => {
+  const handleSubmit = async values => {
     if (fileList.length > 0) {
-      uploadFileWithFirebase(fileList[0], setLoadingFile, (fileUrl) => {
+      uploadFileWithFirebase(filesToUpload[0], setLoadingFile, (fileUrl) => {
         values.Imagen = fileUrl;
         uploadSolicitud({...values, IdUsuario: userInformation.IdUsuario});
       });
     } else {
-      uploadSolicitud(values);
+      uploadSolicitud({...values, IdUsuario: userInformation.IdUsuario});
     }
   };
+
+  useEffect(() => {
+    if (fileList === []) {
+      setFilesToUpload([]);
+    }
+  }, [fileList]);
 
   return (
     <div className="complains-container">
@@ -135,11 +148,11 @@ function Complains() {
                       <Col flex="auto">
                         <Upload
                           className="w-100"
-                          action={() => {}}
                           onChange={handleFile}
-                          listType="text"
                           maxCount={1}
+                          listType="text"
                           fileList={fileList}
+                          customRequest={customRequest}
                         >
                           <Button icon={<UploadOutlined />} className="w-100 text-right" />
                         </Upload>
@@ -160,7 +173,7 @@ function Complains() {
                 />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Mis solicitudes" key="2">
-                <NotAssignedTable idUser={userInformation.IdUsuario} refetch={refetch} setRefetch={setRefetch} />
+                <MyComplainsTable idUser={userInformation.IdUsuario} refetch={refetch} setRefetch={setRefetch} />
               </Tabs.TabPane>
             </Tabs>
           )
