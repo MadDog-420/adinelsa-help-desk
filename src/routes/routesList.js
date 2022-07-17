@@ -8,6 +8,7 @@ const Contact = asyncComponent(() => import('../views/Contact'));
 const Complains = asyncComponent(() => import('../views/Complains'));
 const ComplainDetails = asyncComponent(() => import('../views/Complains/ComplainDetails'));
 const MyAccount = asyncComponent(() => import('../views/MyAccount'));
+const UserManagement = asyncComponent(() => import('../views/UserManagement'));
 
 export const homePage = (rol) => {
   let component, title, name;
@@ -34,7 +35,10 @@ export const homePage = (rol) => {
 
 const moduleException = (rol) => {
   if (rol !== '2') {
-    return [routesDictionary.dashboard.moduleName];
+    return [
+      routesDictionary.dashboard.moduleName,
+      routesDictionary.userManagement.moduleName,
+    ];
   }
   return [];
 };
@@ -83,6 +87,12 @@ const defaultRoutes = [
     component: MyAccount,
     title: routesDictionary.account.title,
     name: routesDictionary.account.moduleName,
+  },
+  {
+    path: routesDictionary.userManagement.router,
+    component: UserManagement,
+    title: routesDictionary.userManagement.title,
+    name: routesDictionary.userManagement.moduleName,
   },
 ]
 

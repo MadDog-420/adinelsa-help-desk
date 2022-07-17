@@ -1,5 +1,5 @@
 import {
-  Checkbox, DatePicker, Input, Radio, Select, Switch,
+  Checkbox, DatePicker, Input, Radio, Select, Switch, Typography,
 } from 'antd';
 
 export const componentMapping = {
@@ -11,6 +11,7 @@ export const componentMapping = {
   singleSelect: Select,
   switchComponent: Switch,
   radio: Radio.Group,
+  readOnly: Typography.Text,
 };
 
 export default componentMapping;
