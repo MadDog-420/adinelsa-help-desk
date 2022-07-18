@@ -1,9 +1,13 @@
 import { Row, Col, Table, Form } from 'antd';
+import { useState, useEffect, useContext } from 'react';
+import { AppContext } from './../../context/index';
 import { columns } from './utils';
-import { useState, useEffect } from 'react';
 import EditableCell from './../../components/EditableCell/index';
 
 function UserManagement() {
+  const { state } = useContext(AppContext);
+  const { me } = state;
+  const { userInformation } = me;
   const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(true);
@@ -17,23 +21,25 @@ function UserManagement() {
   const [editingKey, setEditingKey] = useState('');
 
   useEffect(() => {
-    if (loading) {
+    if (loading && dataEstados.length && dataRoles.length) {
       fetch('http://localhost:8000/api/usuario')
 			.then((res) => res.json())
 			.then((data) => {
-				data.forEach((item) => {
+				data.filter((item) => item.IdUsuario !== userInformation.IdUsuario).forEach((item) => {
           setData((old) => [...old,
             {
               ...item,
               key: item.IdUsuario,
               nombreUsuario: `${item.nombre} ${item.ape_paterno} ${item.ape_materno}`,
+              IdEstadoUsuario: dataEstados.filter((estado) => estado.value === item.IdEstadoUsuario)[0].label,
+              IdRol: dataRoles.filter((rol) => rol.value === item.IdRol)[0].label,
             }
           ])
         })
 				setLoading(false);
 			});
     }
-  }, [loading]);
+  }, [dataEstados, dataRoles, loading, userInformation]);
 
   useEffect(() => {
     if (loadingEstados) {
@@ -58,7 +64,7 @@ function UserManagement() {
       fetch('http://localhost:8000/api/roles')
 			.then((res) => res.json())
 			.then((data) => {
-				data.forEach((item) => {
+				data.filter((item) => item.IdRol !== 2).forEach((item) => {
           setDataRoles((old) => [...old,
             {
               value: item.IdRol,
@@ -87,6 +93,15 @@ function UserManagement() {
   const save = async (key) => {
     try {
       const row = await form.validateFields();
+
+      const toCompare = data.filter((item) => item.key === key)[0];
+      if (row.IdEstadoUsuario !== toCompare.IdEstadoUsuario) {
+        row.IdEstadoUsuario = dataEstados.filter((item) => item.value === row.IdEstadoUsuario)[0].label;
+      }
+      if (row.IdRol !== toCompare.IdRol) {
+        row.IdRol = dataRoles.filter((item) => item.value === row.IdRol)[0].label;
+      }
+
       const newData = [...data];
       const index = newData.findIndex((item) => key === item.key);
 
@@ -100,6 +115,7 @@ function UserManagement() {
         setData(newData);
         setEditingKey('');
       }
+      
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
     }
