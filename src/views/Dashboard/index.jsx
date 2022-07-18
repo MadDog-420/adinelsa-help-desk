@@ -1,82 +1,12 @@
 import { Row, Col } from 'antd';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
 import { faker } from '@faker-js/faker';
 import './styles.scss';
-// import StateComponent from '../../components/StateComponent';
-
-/*
-const getComparison = (fValue, sValue) => {
-  if (fValue > sValue) {
-    return 'lost';
-  } else if (fValue < sValue) {
-    return 'win';
-  }
-  return '';
-}
-
-const getPercentage = (fValue, sValue) => {
-  if (fValue > sValue) {
-    return Number((fValue - sValue)*100/sValue).toFixed(1);
-  } else if (fValue < sValue) {
-    return Number((sValue - fValue)*100/fValue).toFixed(1);
-  }
-  return '';
-}
-
-
-const billingDataFormat = (fValue, sValue) => ({
-  current: 'S/.'+fValue,
-  last: 'S/.'+sValue,
-  percent: getPercentage(fValue, sValue),
-  state: getComparison(fValue, sValue),
-})
-*/
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top',
-    },
-    title: {
-      display: false,
-    },
-    tooltip: {
-      callbacks: {
-        label: (item) =>
-          `${item.dataset.label}: ${item.formattedValue}`,
-      },
-    },
-  },
-  scales: {
-    y: {
-      min: 0,
-    },
-  },
-  maintainAspectRatio: false,
-};
+import BarChart from './BarChart';
+import DoughnutChart from './DoughnutChart';
 
 const labels = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'];
 
-export const data = {
+const data = {
   labels,
   datasets: [
     {
@@ -92,6 +22,33 @@ export const data = {
   ],
 };
 
+const doughnutData = {
+  labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+  datasets: [
+    {
+      label: '# of Votes',
+      data: [12, 19, 3, 5, 2, 3],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+      ],
+      borderWidth: 1,
+    },
+  ],
+};
+
 function Dashboard() {
   // const billingData = billingDataFormat(160, 140);
   return (
@@ -103,36 +60,33 @@ function Dashboard() {
         <Col span={24}>
           <div className="custom-shadow p-3 pb-8 bg-white border-round" style={{maxHeight: '400px'}}>
             <div className="text-bold mb-2 font-large">Histórico de solicitudes</div>
-            <Bar options={options} data={data} />
+            <BarChart data={data} />
           </div>
         </Col>
-        {/* <Col xs={24} sm={24} md={12} className="h-initial">
+        <Col xs={24} sm={12} md={8} className="h-initial">
           <div className="custom-shadow p-3 h-100 bg-white border-round">
-            <div className="text-bold mb-2 font-large">Última facturación</div>
-            <div className="billing font-xx-large mb-1">
-              <ThunderboltOutlined />
-              {' '}
-              {billingData.current}
-              <span className={`comparison ml-2 font-regular ${billingData.state}`}>
-                {`${billingData.percent} %`}
-                {
-                  billingData.state === 'lost' && <CaretUpOutlined />
-                }
-                {
-                  billingData.state === 'win' && <CaretDownOutlined />
-                }
-              </span>
+            <div className="text-bold mb-2 font-large">Incidentes</div>
+            <div className="billing mb-1">
+              <DoughnutChart data={doughnutData} />
             </div>
-            <div className="font-regular">{`Mes anterior: ${billingData.last}`}</div>
           </div>
         </Col>
-        <Col xs={24} sm={24} md={12} className="h-initial">
+        <Col xs={24} sm={12} md={8} className="h-initial">
           <div className="custom-shadow p-3 h-100 bg-white border-round">
-            <div className="text-bold mb-2 font-large">Última operación</div>
-            <div className="font-x-large mb-1"><FileOutlined /> Lorem ipsum dolor sit amet</div>
-            <div className="font-regular">Estado: <StateComponent type={'warning'}>En revisión</StateComponent></div>
+            <div className="text-bold mb-2 font-large">Requerimientos</div>
+            <div className="billing mb-1">
+              <DoughnutChart data={doughnutData} />
+            </div>
           </div>
-        </Col> */}
+        </Col>
+        <Col xs={24} sm={12} md={8} className="h-initial">
+          <div className="custom-shadow p-3 h-100 bg-white border-round">
+            <div className="text-bold mb-2 font-large">Problemas</div>
+            <div className="billing mb-1">
+              <DoughnutChart data={doughnutData} />
+            </div>
+          </div>
+        </Col>
       </Row>
     </div>
   )
