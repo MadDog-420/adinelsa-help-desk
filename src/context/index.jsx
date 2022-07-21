@@ -22,7 +22,7 @@ const AppContextProvider = (props) => {
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
-  const [error, setError] = useState(false);
+  const [error] = useState(false);
 
   useEffect(() => {
     if (loading && authToken && authToken !== '') {

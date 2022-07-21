@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { columns } from './../utils';
 
 const NotAssignedTable = (props) => {
-  const { idUser = null, refetch = null, setRefetch = () => {}} = props;
+  const { idUser = null, refetch = null, setRefetch = () => {}, onlyProblems = false} = props;
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
@@ -35,7 +35,11 @@ const NotAssignedTable = (props) => {
               if (bool) {
                 const object = item;
                 item.key = item.IdSolicitud;
-                formatted.push(object);
+                if (onlyProblems) {
+                  if (item.SolicitudAsociada) formatted.push(object);
+                } else {
+                  formatted.push(object)
+                }
               }
             });
             setDataSource(formatted);
@@ -44,7 +48,7 @@ const NotAssignedTable = (props) => {
           });
       });
     }
-  }, [idUser, loading, setRefetch]);
+  }, [idUser, loading, onlyProblems, setRefetch]);
   
   return (
     <Table columns={columns(navigate, idUser)} dataSource={dataSource} loading={loading} pagination={false} />

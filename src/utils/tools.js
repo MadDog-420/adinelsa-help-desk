@@ -52,4 +52,6 @@ export const transformToOptions = (data, labelName, valueName, other) => {
     typeList.push(object)
   });
   return typeList;
-}
+};
+
+export const fetcher = (...args) => fetch(...args).then(res => res.json());

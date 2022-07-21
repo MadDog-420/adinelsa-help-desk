@@ -5,7 +5,7 @@ import {
   Skeleton,
 } from 'antd';
 import { BellOutlined } from '@ant-design/icons';
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { menuItems, footerItems } from './constants';
 import  Logo from '../../media/adinelsa-logo.png';
@@ -13,7 +13,6 @@ import './styles.scss';
 import { PropTypes } from 'prop-types';
 import { homePage } from './../../routes/routesList';
 import { defaultMenus } from './siderMenus';
-import { AppContext } from './../../context/index';
 import { logout } from '../../utils/tools';
 
 const selectedKeys = (pathName, rol) => {
@@ -30,7 +29,7 @@ const selectedKeys = (pathName, rol) => {
 
 const Sidebar = (props) => {
   const { rol, setLoginState } = props;
-  const { dispatch } = useContext(AppContext);
+  // const { dispatch } = useContext(AppContext);
   const [collapsed, setCollapsed] = useState(false);
   const onCollapse = () => {
     setCollapsed(!collapsed);

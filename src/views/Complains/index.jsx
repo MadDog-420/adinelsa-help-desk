@@ -1,4 +1,4 @@
-import { Row, Form, Button, Tabs, Col, Upload, message } from 'antd';
+import { Row, Form, Button, Tabs, Col, Upload, message, Checkbox, Select } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import CustomForm from '../../components/CustomForm';
@@ -8,6 +8,8 @@ import AllComplains from './AllComplains';
 import { uploadFileWithFirebase } from './../../utils/fire';
 import './styles.scss';
 import MyComplainsTable from './MyComplainsTable/index';
+import useSWR from 'swr';
+import { fetcher } from '../../utils/tools';
 
 const itemList = () => [
 	{
@@ -70,9 +72,14 @@ function Complains() {
   const [fileList, setFileList] = useState();
   const [filesToUpload, setFilesToUpload] = useState([]);
 
+  const [disableListaSolicitudes, setDisableListaSolicitudes] = useState(true);
+  const [solicitudAsociada, setSolicitudAsociada] = useState();
+
+  const { data, error } = useSWR('http://localhost:8000/api/solicitud', fetcher);
+
   const handleFile = (e) => {
-    setFilesToUpload([e.file.originFileObj])
-    setFileList(e.fileList)
+    setFilesToUpload([e.file.originFileObj]);
+    setFileList(e.fileList);
   };
 
   const customRequest = (options) => {
@@ -110,10 +117,10 @@ function Complains() {
     if (fileList.length > 0) {
       uploadFileWithFirebase(filesToUpload[0], setLoadingFile, (fileUrl) => {
         values.Imagen = fileUrl;
-        uploadSolicitud({...values, IdUsuario: userInformation.IdUsuario});
+        uploadSolicitud({...values, IdUsuario: userInformation.IdUsuario, SolicitudAsociada: !disableListaSolicitudes && solicitudAsociada});
       });
     } else {
-      uploadSolicitud({...values, IdUsuario: userInformation.IdUsuario});
+      uploadSolicitud({...values, IdUsuario: userInformation.IdUsuario, SolicitudAsociada: !disableListaSolicitudes && solicitudAsociada});
     }
   };
 
@@ -122,6 +129,8 @@ function Complains() {
       setFilesToUpload([]);
     }
   }, [fileList]);
+
+  console.log(data);
 
   return (
     <div className="complains-container">
@@ -145,6 +154,32 @@ function Complains() {
                   requiredMark={false}
                   submitButton={(
                     <>
+                      <Col span={24} className="mb-1">
+                        <Checkbox checked={!disableListaSolicitudes} onChange={() => setDisableListaSolicitudes(!disableListaSolicitudes)}>
+                          ¿Desea vincular esta solicitud con una anterior?
+                        </Checkbox>
+                      </Col>
+                      {
+                        !disableListaSolicitudes && (
+                          <Col span={24} className="mb-3">
+                            <Select
+                              onChange={(value) => setSolicitudAsociada(value)}
+                              loading={!data || error}
+                              placeholder="Selecciona una solicitud"
+                              style={{ width: 250 }}
+                              size="large"
+                            >
+                              {
+                                data?.map((item) => (
+                                  <Select.Option value={item.Codigo} key={item.IdSolicitud}>
+                                    {item.Solicitud}
+                                  </Select.Option>
+                                ))
+                              }
+                            </Select>
+                          </Col>
+                        )
+                      }
                       <Col flex="auto">
                         <Upload
                           className="w-100"

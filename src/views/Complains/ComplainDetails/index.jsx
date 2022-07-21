@@ -65,7 +65,7 @@ function ComplainDetails() {
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.id) {
-          message.success('Solicitud agregada');
+          message.success('Detalle de solicitud agregado');
 				} else {
 					message.error('Ocurrió un error al intentar agregar la solicitud');
 				}
