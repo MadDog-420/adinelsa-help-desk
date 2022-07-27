@@ -75,14 +75,16 @@ const columns = (navigate) => [
     },
 ];
 
-const ComplainsTable = () => {
+const ComplainsTable = (props) => {
+  const { idUser = undefined } = props;
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
   const [dataSource, setDataSource] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/detalleSolicitud')
+    if (loading) {
+      fetch('http://localhost:8000/api/detalleSolicitud')
       .then((res) => res.json())
       .then((data) => {
         const formatted = [];
@@ -95,12 +97,22 @@ const ComplainsTable = () => {
           item.fecha = item.FechaRegistro;
           item.tipo = item.Tipo;
           item.estado = item.Estado;
-          formatted.push(object);
+
+          if (idUser) {
+            if (idUser === item.Responsable) {
+              formatted.push(object);
+            }
+          } else {
+            formatted.push(object);
+          }
+          
         });
         setDataSource(formatted);
         setLoading(false);
       });
-  }, [loading]);
+    }
+    
+  }, [loading, idUser]);
 
   return (
     <Table columns={columns(navigate)} dataSource={dataSource} loading={loading} pagination={false} />

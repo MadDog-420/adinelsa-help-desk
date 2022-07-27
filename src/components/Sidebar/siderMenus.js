@@ -32,26 +32,7 @@ export const defaultMenus = (rol) => {
         icon: <UsergroupAddOutlined />,
       }
     ];
-  }
-  if (rol === '3' || rol === '4') {
-    return [
-      {
-        title: routesDictionary.dashboard.title,
-        key: routesDictionary.dashboard.router,
-        redirection: routesDictionary.dashboard.router,
-        name: routesDictionary.dashboard.moduleName,
-        icon: <DashboardOutlined />,
-      },
-      {
-        title: routesDictionary.claims.title,
-        key: routesDictionary.claims.router,
-        redirection: routesDictionary.claims.router,
-        name: routesDictionary.claims.moduleName,
-        icon: <ExceptionOutlined />,
-      }
-    ];
-  }
-  if (rol === '1') {
+  } else {
     return [
       {
         title: routesDictionary.claims.title,
@@ -67,9 +48,8 @@ export const defaultMenus = (rol) => {
         name: routesDictionary.account.moduleName,
         icon: <UserOutlined />,
       }
-    ];
+    ]
   }
-  return [];
 };
 
 export const footerMenus = [

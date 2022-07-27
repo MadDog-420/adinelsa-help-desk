@@ -75,7 +75,7 @@ function Complains() {
   const [disableListaSolicitudes, setDisableListaSolicitudes] = useState(true);
   const [solicitudAsociada, setSolicitudAsociada] = useState();
 
-  const { data, error } = useSWR('http://localhost:8000/api/solicitud', fetcher);
+  const { data = [], error } = useSWR('http://localhost:8000/api/solicitud', fetcher);
 
   const handleFile = (e) => {
     setFilesToUpload([e.file.originFileObj]);
@@ -130,8 +130,6 @@ function Complains() {
     }
   }, [fileList]);
 
-  console.log(data);
-
   return (
     <div className="complains-container">
       <Row>
@@ -139,8 +137,8 @@ function Complains() {
       </Row>
       <Row gutter={[16, 16]}>
         {
-          userInformation.IdRol === 2 && (
-            <AllComplains idRol={userInformation.IdRol} key="allComplains" />
+          userInformation.IdRol >= 2 && (
+            <AllComplains idRol={userInformation.IdRol} idUser={userInformation.IdUsuario} key="allComplains" />
           )
         }
         {
@@ -154,30 +152,36 @@ function Complains() {
                   requiredMark={false}
                   submitButton={(
                     <>
-                      <Col span={24} className="mb-1">
-                        <Checkbox checked={!disableListaSolicitudes} onChange={() => setDisableListaSolicitudes(!disableListaSolicitudes)}>
-                          ¿Desea vincular esta solicitud con una anterior?
-                        </Checkbox>
-                      </Col>
                       {
-                        !disableListaSolicitudes && (
-                          <Col span={24} className="mb-3">
-                            <Select
-                              onChange={(value) => setSolicitudAsociada(value)}
-                              loading={!data || error}
-                              placeholder="Selecciona una solicitud"
-                              style={{ width: 250 }}
-                              size="large"
-                            >
-                              {
-                                data?.map((item) => (
-                                  <Select.Option value={item.Codigo} key={item.IdSolicitud}>
-                                    {item.Solicitud}
-                                  </Select.Option>
-                                ))
-                              }
-                            </Select>
-                          </Col>
+                        data.length && (
+                          <>
+                            <Col span={24} className="mb-1">
+                              <Checkbox checked={!disableListaSolicitudes} onChange={() => setDisableListaSolicitudes(!disableListaSolicitudes)}>
+                                ¿Desea vincular esta solicitud con una anterior?
+                              </Checkbox>
+                            </Col>
+                            {
+                              !disableListaSolicitudes && (
+                                <Col span={24} className="mb-3">
+                                  <Select
+                                    onChange={(value) => setSolicitudAsociada(value)}
+                                    loading={!data || error}
+                                    placeholder="Selecciona una solicitud"
+                                    style={{ width: 250 }}
+                                    size="large"
+                                  >
+                                    {
+                                      data.map((item) => (
+                                        <Select.Option value={item.Codigo} key={item.IdSolicitud}>
+                                          {item.Solicitud}
+                                        </Select.Option>
+                                      ))
+                                    }
+                                  </Select>
+                                </Col>
+                              )
+                            }
+                          </>
                         )
                       }
                       <Col flex="auto">

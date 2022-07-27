@@ -16,6 +16,7 @@ const CustomForm = (props) => {
     requiredMark,
     loading,
     onChangedValues,
+    disabled,
   } = props;
 
   if (loading) {
@@ -48,7 +49,7 @@ const CustomForm = (props) => {
               {...(item.icon && { icon: item.icon })}
               options={item.options}
               form={form}
-              disabled={item.disabled}
+              disabled={item.disabled || disabled}
               format={item.format}
               placeholder={item.placeholder}
               checkedChildren={item.checkedChildren}
@@ -74,6 +75,7 @@ CustomForm.propTypes = {
   requiredMark: PropTypes.bool,
   loading: PropTypes.bool,
   onChangedValues: PropTypes.func,
+  disabled: PropTypes.bool,
 };
 
 CustomForm.defaultProps = {
@@ -85,6 +87,7 @@ CustomForm.defaultProps = {
   requiredMark: true,
   loading: false,
   onChangedValues: () => {},
+  disabled: false,
 };
 
 export default CustomForm;

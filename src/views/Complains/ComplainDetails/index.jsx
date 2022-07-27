@@ -242,6 +242,8 @@ function ComplainDetails() {
       setSlas(transformToOptions(data, 'SLA', 'IdSLA', 'TiempoRespuesta'));
     })
   }, [loadingSlas]);
+
+  console.log(userInformation);
   
   return (
     <div className="complains-container">
@@ -281,6 +283,7 @@ function ComplainDetails() {
               requiredMark={false}
               handleSubmit={handleSubmit}
               onChangedValues={onChange}
+              disabled={data && userInformation.IdUsuario !== data.responsable}
             />
           </div>
         </Col>
@@ -296,6 +299,7 @@ function ComplainDetails() {
                   requiredMark={false}
                   handleSubmit={handleSubmit}
                   onChangedValues={onChange}
+                  disabled={data && userInformation.IdUsuario !== data.responsable}
                 />
               </div>
             </Col>
